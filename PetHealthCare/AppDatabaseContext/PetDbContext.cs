@@ -30,6 +30,7 @@ public class PetDbContext : DbContext
         {
             entity.Property(s => s.Status).HasConversion<string>();
             entity.Navigation(u => u.UsersRoles).AutoInclude();
+            entity.HasIndex(u => u.Email).IsUnique();
             // entity.Navigation(u => u.Pets).AutoInclude();
         });
         modelBuilder.Entity<Pets>(entity =>
@@ -86,11 +87,9 @@ public class PetDbContext : DbContext
             Role adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
             Users.Add(new Users
             {
-                FirstName = "Admin",
-                LastName = "Admin",
                 Avatar = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
                 Email = "Admin@gmail.com",
-                BirthDay = "09/09/2001",
+                DateOfBirth = "09/09/2001",
                 Address = "Admin",
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,

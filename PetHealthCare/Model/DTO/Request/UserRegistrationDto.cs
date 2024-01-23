@@ -2,7 +2,7 @@
 
 namespace PetHealthCare.Model.DTO.Request;
 
-public class UserDTO
+public class UserRegistrationDto
 {
     [Required]
     public string FullName { get; set; }
@@ -18,8 +18,5 @@ public class UserDTO
     [Compare("Password", ErrorMessage = "Password and Repeat Password do not match.")]
     public string RepeatPassword { get; set; }
     
-    public string? Avatar { get; set; }
-    public string? DateOfBirth { get; set; }
-    public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
 }

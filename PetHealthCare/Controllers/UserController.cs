@@ -47,14 +47,14 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register-member")]
-    public async Task<IActionResult> CreateUserAccount(UserDTO userDto)
+    public async Task<IActionResult> CreateUserAccount(UserRegistrationDto userRegistrationDto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        return Ok(await _userService.CreateUserAsync(userDto));
+        return Ok(await _userService.CreateUserAsync(userRegistrationDto));
     }
 
     [HttpPost("updateInformation/{id}")]

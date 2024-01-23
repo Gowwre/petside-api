@@ -31,25 +31,21 @@ public class UserService : IUserService
         }
         return user;
     }
-    public async Task<ResultResponse<Users>> CreateUserAsync(UserDTO userDTO)
+    public async Task<ResultResponse<Users>> CreateUserAsync(UserRegistrationDto userRegistrationDto)
     {
         ResultResponse<Users> result = new ResultResponse<Users>();
         var roleOwner = _roleRepository.GetAll().Where(x => x.RoleName == RoleName.OWNER).FirstOrDefault();
-        PasswordHashUtils.CreatePasswordHash(userDTO.Password, out byte[] passwordHash, out byte[] passwordSalt);
+        PasswordHashUtils.CreatePasswordHash(userRegistrationDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
         try
         {
             result.Data = await _userRepository.AddAsync(new Users
             {
-                FirstName = userDTO.FullName,
-                LastName = userDTO.FullName,
-                Email = userDTO.Email,
-                Avatar = userDTO.Avatar,
-                BirthDay = userDTO.DateOfBirth,
-                Address = userDTO.Address,
+                FullName = userRegistrationDto.FullName,
+                Email = userRegistrationDto.Email,
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                PhoneNumber = userDTO.PhoneNumber,
+                PhoneNumber = userRegistrationDto.PhoneNumber,
                 UsersRoles = new List<UsersRole> { new UsersRole { Role = roleOwner } }
             });
             result.Success = true;
@@ -83,10 +79,9 @@ public class UserService : IUserService
             return result;
         }
 
-        user.FirstName = userUpdateDTO.FirstName;
-        user.LastName = userUpdateDTO.LastName;
+        user.FullName = userUpdateDTO.Fullname;
         user.Avatar = userUpdateDTO.Avatar;
-        user.BirthDay = userUpdateDTO.BirthDay;
+        user.DateOfBirth = userUpdateDTO.BirthDay;
         user.Address = userUpdateDTO.Address;
         user.PhoneNumber = userUpdateDTO.PhoneNumber;
         _userRepository.Update(user);
