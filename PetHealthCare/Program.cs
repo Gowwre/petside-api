@@ -10,18 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddControllers();
 builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-        });
+    .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PetDbContext>(options =>
-options.UseSqlServer(
-    builder.Configuration.GetConnectionString("PetAppContext"))
-                         .UseLazyLoadingProxies()
-                         .EnableSensitiveDataLogging()
+    options.UseSqlServer(
+            builder.Configuration.GetConnectionString("PetAppContext"))
+        .UseLazyLoadingProxies()
+        .EnableSensitiveDataLogging()
 );
 
 builder.Services.AddTransient<IEmailService, EmailService>();
@@ -38,11 +35,8 @@ builder.Services.AddTransient<IPetRepository, PetRepository>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
