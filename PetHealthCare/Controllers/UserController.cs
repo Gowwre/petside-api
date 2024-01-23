@@ -44,12 +44,12 @@ public class UserController : ControllerBase
             return StatusCode(statusCode, errorMessage);
         }
     }
-    [HttpPost("registermember")]
-    public async Task<IActionResult> CreateUserAccount(UserDTO userDTO)
+    [HttpPost("register-member")]
+    public async Task<IActionResult> CreateUserAccount(UserDTO userDto)
     {
         if (ModelState.IsValid)
         {
-            return Ok(await _userService.CreateUserAsync(userDTO));
+            return Ok(await _userService.CreateUserAsync(userDto));
         }
         else
         {
