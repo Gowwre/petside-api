@@ -3,6 +3,7 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/users")]
 [ApiController]
 public class UserController : ControllerBase
@@ -44,18 +45,16 @@ public class UserController : ControllerBase
             return StatusCode(statusCode, errorMessage);
         }
     }
+
     [HttpPost("register-member")]
     public async Task<IActionResult> CreateUserAccount(UserDTO userDto)
     {
-        if (ModelState.IsValid)
-        {
-            return Ok(await _userService.CreateUserAsync(userDto));
-        }
-        else
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
+        return Ok(await _userService.CreateUserAsync(userDto));
     }
 
     [HttpPost("updateInformation/{id}")]
@@ -105,7 +104,6 @@ public class UserController : ControllerBase
     [HttpGet("getInformation/{id}")]
     public IActionResult GetInfomationUser(Guid id)
     {
-
         //try
         //{
         //    return StatusCode(200, _userService.GetUserAsync(id));
