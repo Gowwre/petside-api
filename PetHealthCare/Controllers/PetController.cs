@@ -70,7 +70,7 @@ public class PetController : ControllerBase
     [HttpPost("CreatePet/{OwnerId}")]
     public async Task<IActionResult> CreatePetInformation(Guid OwnerId, PetDTO petDTO)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
