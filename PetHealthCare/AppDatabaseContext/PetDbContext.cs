@@ -88,7 +88,7 @@ public class PetDbContext : DbContext
             {
                 FirstName = "Admin",
                 LastName = "Admin",
-                Avarta = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
+                Avatar = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
                 Email = "Admin@gmail.com",
                 BirthDay = "09/09/2001",
                 Address = "Admin",

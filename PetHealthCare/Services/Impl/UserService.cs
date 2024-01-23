@@ -43,7 +43,7 @@ public class UserService : IUserService
                 FirstName = userDTO.FullName,
                 LastName = userDTO.FullName,
                 Email = userDTO.Email,
-                Avarta = userDTO.Avarta,
+                Avatar = userDTO.Avarta,
                 BirthDay = userDTO.BirthDay,
                 Address = userDTO.Address,
                 Status = UserStatus.INACTIVE,
@@ -85,7 +85,7 @@ public class UserService : IUserService
 
         user.FirstName = userUpdateDTO.FirstName;
         user.LastName = userUpdateDTO.LastName;
-        user.Avarta = userUpdateDTO.Avatar;
+        user.Avatar = userUpdateDTO.Avatar;
         user.BirthDay = userUpdateDTO.BirthDay;
         user.Address = userUpdateDTO.Address;
         user.PhoneNumber = userUpdateDTO.PhoneNumber;

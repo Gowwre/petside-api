@@ -17,7 +17,7 @@ public class Users : Common
     [StringLength(50), MinLength(1)]
     [Column("LastName")]
     public string LastName { get; set; }
-    public string Avarta { get; set; } // Avatar
+    public string Avatar { get; set; } // Avatar
     [Required]
     [EmailAddress]
     [Column("Email")]
