@@ -22,7 +22,7 @@ public class PetService : IPetService
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
         if (ownerPet == null)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "OWNER_NOT_FOUND";
             return result;
@@ -40,13 +40,13 @@ public class PetService : IPetService
                 Weight = petDTO.Weight,
                 Users = ownerPet
             });
-            result.code = 201;
+            result.Code = 201;
             result.Success = true;
             result.Messages = "Create Pet Successfully";
         }
         catch (Exception ex)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "CREATE_PET_FAIL";
 
@@ -65,12 +65,12 @@ public class PetService : IPetService
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "PET_NOT_FOUND";
             return result;
         }
-        result.code = 200;
+        result.Code = 200;
         result.Success = true;
         result.Data = pet;
         result.Messages = "Get Pet Successfully";
@@ -83,7 +83,7 @@ public class PetService : IPetService
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "PET_NOT_FOUND";
             return result;
@@ -97,7 +97,7 @@ public class PetService : IPetService
         pet.Weight = userUpdateDTO.Weight;
         _petRepository.Update(pet);
 
-        result.code = 200;
+        result.Code = 200;
         result.Success = true;
         result.Data = _petRepository.GetById(petId);
         result.Messages = "Update Pet Successfully";

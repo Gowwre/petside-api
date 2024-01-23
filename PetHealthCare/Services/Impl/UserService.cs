@@ -54,7 +54,7 @@ public class UserService : IUserService
             });
             result.Success = true;
             result.Messages = "Create User Successfully";
-            result.code = 201;
+            result.Code = 201;
         }
         catch (Exception ex)
         {
@@ -77,7 +77,7 @@ public class UserService : IUserService
         var user = _userRepository.GetById(userId);
         if (user == null)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "USER_NOT_FOUND";
             return result;
@@ -93,7 +93,7 @@ public class UserService : IUserService
 
         result.Success = true;
         result.Messages = "Update User Successfully";
-        result.code = 200;
+        result.Code = 200;
         result.Data = _userRepository.GetById(userId);
         return result;
     }
@@ -104,13 +104,13 @@ public class UserService : IUserService
         var user = _userRepository.GetById(userId);
         if (user == null)
         {
-            result.code = 300;
+            result.Code = 300;
             result.Success = false;
             result.Messages = "USER_NOT_FOUND";
         }
         else
         {
-            result.code = 200;
+            result.Code = 200;
             result.Data = user;
             result.Success = true;
             result.Messages = "Find User In Database";
