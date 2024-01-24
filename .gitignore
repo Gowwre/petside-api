@@ -4,3 +4,5 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea
+PetHealthCare/appsettings.json
+PetHealthCare/appsettings.Development.json
