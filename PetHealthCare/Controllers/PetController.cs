@@ -17,8 +17,8 @@ public class PetController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("updatePet/{id}")]
-    public async Task<IActionResult> UpdatePetInfomation(Guid id, PetDTO petDTO)
+    [HttpPut("{petId}")]
+    public async Task<IActionResult> UpdatePetInfomation(Guid petId, PetDto petDTO)
     {
         //try
         //{
@@ -43,11 +43,11 @@ public class PetController : ControllerBase
         //    _logger.LogError(statusCode, errorMessage);
         //    return StatusCode(statusCode, errorMessage);
         //}
-        return Ok(_petService.UpdatePetAsync(id, petDTO));
+        return Ok(_petService.UpdatePetAsync(petId, petDTO));
     }
 
-    [HttpGet("getPetInformation/{id}")]
-    public async Task<IActionResult> GetInfomationPet(Guid id)
+    [HttpGet("{petId}")]
+    public async Task<IActionResult> GetInfomationPet(Guid petId)
     {
         //try
         //{
@@ -65,14 +65,14 @@ public class PetController : ControllerBase
         //    _logger.LogError(statusCode, errorMessage);
         //    return StatusCode(statusCode, errorMessage);
         //}
-        return Ok(_petService.GetPetAsync(id));
+        return Ok(_petService.GetPetAsync(petId));
     }
 
-    [HttpPost("CreatePet/{OwnerId}")]
-    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, PetDTO petDTO)
+    [HttpPost]
+    public async Task<IActionResult> CreatePetInformation(PetDto petDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return Ok(_petService.CreatePetAsync(petDTO, OwnerId));
+        return Ok(_petService.CreatePetAsync(petDTO));
         //try
         //{
         //    if (ModelState.IsValid)
@@ -99,9 +99,15 @@ public class PetController : ControllerBase
         //}
     }
 
-    [HttpGet("getAllPetInformation")]
+    [HttpGet]
     public IActionResult GetAllUser()
     {
         return Ok(_petService.GetAllPet());
+    }
+
+    [HttpDelete("{petId}")]
+    public async Task<IActionResult> DeletePet(Guid petId)
+    {
+        throw new NotImplementedException();
     }
 }

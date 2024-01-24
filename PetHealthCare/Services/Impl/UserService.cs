@@ -18,7 +18,7 @@ public class UserService : IUserService
         _roleRepository = roleRepository;
     }
 
-    public async Task<Users> LoginAsync(LoginDTO loginDTO)
+    public async Task<Users> LoginAsync(LoginDto loginDTO)
     {
         var user = _userRepository.GetAll().Where(x => x.Email == loginDTO.Email).FirstOrDefault();
         if (user == null) throw new Exception("ACCOUNT_NOT_FOUND");
@@ -58,13 +58,13 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<PaginatedList<Users>> GetUserPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO)
+    public async Task<PaginatedList<Users>> GetUserPagin(GetWithPaginationQueryDto getWithPaginationQueryDTO)
     {
         return await PaginatedList<Users>.CreateAsync(_userRepository.GetAll()
             , getWithPaginationQueryDTO.PageNumber, getWithPaginationQueryDTO.PageSize);
     }
 
-    public async Task<ResultResponse<Users>> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO)
+    public async Task<ResultResponse<Users>> UpdateUserAsync(Guid userId, UserUpdateDto userUpdateDTO)
     {
         var result = new ResultResponse<Users>();
         var user = _userRepository.GetById(userId);

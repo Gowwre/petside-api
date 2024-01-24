@@ -5,7 +5,7 @@ namespace PetHealthCare.Services.Impl;
 
 public class EmailService : IEmailService
 {
-    public async Task SendAsync(EmailRequestDTO request)
+    public async Task SendAsync(EmailRequestDto request)
     {
         var emailClient = new SmtpClient("localhost");
         var message = new MailMessage

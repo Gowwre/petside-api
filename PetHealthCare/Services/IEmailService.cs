@@ -4,5 +4,5 @@ namespace PetHealthCare.Services;
 
 public interface IEmailService
 {
-    Task SendAsync(EmailRequestDTO request);
+    Task SendAsync(EmailRequestDto request);
 }

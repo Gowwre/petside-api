@@ -1,6 +1,6 @@
 ﻿namespace PetHealthCare.Model.DTO.Request;
 
-public class EmailRequestDTO
+public class EmailRequestDto
 {
     public string To { get; set; }
     public string Subject { get; set; }

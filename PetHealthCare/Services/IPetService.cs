@@ -6,8 +6,8 @@ namespace PetHealthCare.Services;
 
 public interface IPetService
 {
-    public Task<ResultResponse<Pets>> CreatePetAsync(PetDTO petDTO, Guid userId);
+    public Task<ResultResponse<Pets>> CreatePetAsync(PetDto petDto);
     public Task<ResultResponse<Pets>> GetPetAsync(Guid petId);
     public List<Pets> GetAllPet();
-    public Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDTO userUpdateDTO);
+    public Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDto userUpdateDTO);
 }

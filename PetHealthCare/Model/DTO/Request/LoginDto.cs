@@ -2,7 +2,7 @@
 
 namespace PetHealthCare.Model.DTO.Request;
 
-public class LoginDTO
+public class LoginDto
 {
     [Required] [EmailAddress] public string Email { get; set; }
 

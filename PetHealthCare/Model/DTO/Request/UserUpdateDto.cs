@@ -1,6 +1,6 @@
 ﻿namespace PetHealthCare.Model.DTO.Request;
 
-public class UserUpdateDTO
+public class UserUpdateDto
 {
     public string Avatar { get; set; }
 

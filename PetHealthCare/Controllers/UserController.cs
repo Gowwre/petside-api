@@ -18,7 +18,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginDTO loginDTO)
+    public async Task<IActionResult> LoginAsync(LoginDto loginDTO)
     {
         try
         {
@@ -49,10 +49,10 @@ public class UserController : ControllerBase
         return Ok(await _userService.CreateUserAsync(userRegistrationDto));
     }
 
-    [HttpPost("updateInformation/{id}")]
-    public async Task<IActionResult> UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> UpdateUserAccount(Guid userId, UserUpdateDto userUpdateDTO)
     {
-        return Ok(_userService.UpdateUserAsync(id, userUpdateDTO));
+        return Ok(_userService.UpdateUserAsync(userId, userUpdateDTO));
         //try
         //{
         //    if (await _userService.UpdateUserAsync(id, userUpdateDTO))
@@ -93,8 +93,8 @@ public class UserController : ControllerBase
 
     //}
 
-    [HttpGet("getInformation/{id}")]
-    public IActionResult GetInfomationUser(Guid id)
+    [HttpGet("{userId}")]
+    public IActionResult GetInfomationUser(Guid userId)
     {
         //try
         //{
@@ -112,12 +112,42 @@ public class UserController : ControllerBase
         //    _logger.LogError(statusCode, errorMessage);
         //    return StatusCode(statusCode, errorMessage);
         //}
-        return Ok(_userService.GetUserAsync(id));
+        return Ok(_userService.GetUserAsync(userId));
     }
 
-    [HttpGet("getAllInformation")]
+    [HttpGet]
     public IActionResult GetAllUser()
     {
         return Ok(_userService.GetAllUser());
+    }
+
+    [HttpPost("{userId}/tasks")]
+    public async Task<IActionResult> CreateTask(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpGet("{userId}/tasks")]
+    public async Task<IActionResult> GetAllTask(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpGet("{userId}/tasks/{taskId}")]
+    public async Task<IActionResult> GetTask(Guid userId, Guid taskId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPut("{userId}/tasks/{taskId}")]
+    public async Task<IActionResult> UpdateTask(Guid userId, Guid taskId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpDelete("{userId}/tasks/{taskId}")]
+    public async Task<IActionResult> DeleteTask(Guid userId, Guid taskId)
+    {
+        throw new NotImplementedException();
     }
 }

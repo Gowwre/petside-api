@@ -16,10 +16,10 @@ public class PetService : IPetService
         _petRepository = petRepository;
     }
 
-    public async Task<ResultResponse<Pets>> CreatePetAsync(PetDTO petDTO, Guid userId)
+    public async Task<ResultResponse<Pets>> CreatePetAsync(PetDto petDto)
     {
         var result = new ResultResponse<Pets>();
-        var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
+        var ownerPet = _userRepository.GetAll().FirstOrDefault(u => u.Id == petDto.OwnerId);
         if (ownerPet == null)
         {
             result.Code = 300;
@@ -32,13 +32,13 @@ public class PetService : IPetService
         {
             result.Data = await _petRepository.AddAsync(new Pets
             {
-                Name = petDTO.Name,
-                Species = petDTO.Species,
-                Breed = petDTO.Breed,
-                BirthDate = petDTO.BirthDate,
-                Age = petDTO.Age,
-                Gender = petDTO.Gender,
-                Weight = petDTO.Weight,
+                Name = petDto.Name,
+                Species = petDto.Species,
+                Breed = petDto.Breed,
+                BirthDate = petDto.BirthDate,
+                Age = petDto.Age,
+                Gender = petDto.Gender,
+                Weight = petDto.Weight,
                 Users = ownerPet
             });
             result.Code = 201;
@@ -79,7 +79,7 @@ public class PetService : IPetService
         return result;
     }
 
-    public async Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDTO userUpdateDTO)
+    public async Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDto userUpdateDTO)
     {
         var result = new ResultResponse<Pets>();
         var pet = _petRepository.GetById(petId);
