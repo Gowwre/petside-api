@@ -1,8 +1,8 @@
-﻿using PetHealthCare.Model.Abstract;
-using PetHealthCare.Model.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using PetHealthCare.Model.Abstract;
+using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Model;
 
@@ -10,7 +10,8 @@ namespace PetHealthCare.Model;
 public class Users : Common
 {
     [Required]
-    [StringLength(100), MinLength(1)]
+    [StringLength(100)]
+    [MinLength(1)]
     [Column("Fullname")]
     public string FullName { get; set; }
 

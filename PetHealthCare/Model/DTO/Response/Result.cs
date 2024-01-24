@@ -2,7 +2,7 @@
 
 public class Result<T>
 {
-    public List<string> Messages { get; set; } = new List<string>();
+    public List<string> Messages { get; set; } = new();
 
     public bool Succeeded { get; set; }
 
@@ -19,6 +19,7 @@ public class Result<T>
             Succeeded = true
         };
     }
+
     public static Result<T> Success(string message)
     {
         return new Result<T>
@@ -27,6 +28,7 @@ public class Result<T>
             Messages = new List<string> { message }
         };
     }
+
     public static Result<T> Success(T data)
     {
         return new Result<T>
@@ -35,6 +37,7 @@ public class Result<T>
             Data = data
         };
     }
+
     public static Result<T> Success(T data, string message)
     {
         return new Result<T>
@@ -64,6 +67,7 @@ public class Result<T>
     {
         return Task.FromResult(Success(data, message));
     }
+
     public static Result<T> Failure()
     {
         return new Result<T>
@@ -71,6 +75,7 @@ public class Result<T>
             Succeeded = false
         };
     }
+
     public static Result<T> Failure(string message)
     {
         return new Result<T>
@@ -79,6 +84,7 @@ public class Result<T>
             Messages = new List<string> { message }
         };
     }
+
     public static Result<T> Failure(List<string> messages)
     {
         return new Result<T>
@@ -87,6 +93,7 @@ public class Result<T>
             Messages = messages
         };
     }
+
     public static Result<T> Failure(T data)
     {
         return new Result<T>
@@ -95,6 +102,7 @@ public class Result<T>
             Data = data
         };
     }
+
     public static Result<T> Failure(T data, string message)
     {
         return new Result<T>
@@ -104,6 +112,7 @@ public class Result<T>
             Data = data
         };
     }
+
     public static Result<T> Failure(T data, List<string> messages)
     {
         return new Result<T>

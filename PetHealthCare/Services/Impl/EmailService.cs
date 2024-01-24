@@ -1,6 +1,5 @@
-﻿
+﻿using System.Net.Mail;
 using PetHealthCare.Model.DTO.Request;
-using System.Net.Mail;
 
 namespace PetHealthCare.Services.Impl;
 

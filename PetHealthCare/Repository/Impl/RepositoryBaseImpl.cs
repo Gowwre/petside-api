@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PetHealthCare.AppDatabaseContext;
 
 namespace PetHealthCare.Repository.Impl;
@@ -12,6 +11,7 @@ public class RepositoryBaseImpl<T> : IRepositoryBase<T> where T : class
     {
         _context = context;
     }
+
     //public void Add(T entity) // chua bi xoa
     //{
     //    _context.Set<T>().Add(entity);
@@ -26,7 +26,7 @@ public class RepositoryBaseImpl<T> : IRepositoryBase<T> where T : class
 
     public void Delete(Guid id)
     {
-        T entity = GetById(id);
+        var entity = GetById(id);
         _context.Set<T>().Remove(entity);
         _context.SaveChanges();
     }
@@ -35,10 +35,12 @@ public class RepositoryBaseImpl<T> : IRepositoryBase<T> where T : class
     {
         return _context.Set<T>();
     }
+
     public T GetById(Guid id)
     {
         return _context.Set<T>().Find(id);
     }
+
     public void Update(T entity)
     {
         _context.Set<T>().Attach(entity);

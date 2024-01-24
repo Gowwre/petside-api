@@ -7,8 +7,8 @@ namespace PetHealthCare.Services.Impl;
 
 public class PetService : IPetService
 {
-    private readonly IUserRepository _userRepository;
     private readonly IPetRepository _petRepository;
+    private readonly IUserRepository _userRepository;
 
     public PetService(IUserRepository userRepository, IPetRepository petRepository)
     {
@@ -18,7 +18,7 @@ public class PetService : IPetService
 
     public async Task<ResultResponse<Pets>> CreatePetAsync(PetDTO petDTO, Guid userId)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        var result = new ResultResponse<Pets>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
         if (ownerPet == null)
         {
@@ -27,6 +27,7 @@ public class PetService : IPetService
             result.Messages = "OWNER_NOT_FOUND";
             return result;
         }
+
         try
         {
             result.Data = await _petRepository.AddAsync(new Pets
@@ -49,8 +50,8 @@ public class PetService : IPetService
             result.Code = 300;
             result.Success = false;
             result.Messages = "CREATE_PET_FAIL";
-
         }
+
         return result;
     }
 
@@ -61,7 +62,7 @@ public class PetService : IPetService
 
     public async Task<ResultResponse<Pets>> GetPetAsync(Guid petId)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        var result = new ResultResponse<Pets>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -70,6 +71,7 @@ public class PetService : IPetService
             result.Messages = "PET_NOT_FOUND";
             return result;
         }
+
         result.Code = 200;
         result.Success = true;
         result.Data = pet;
@@ -79,7 +81,7 @@ public class PetService : IPetService
 
     public async Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDTO userUpdateDTO)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        var result = new ResultResponse<Pets>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -88,6 +90,7 @@ public class PetService : IPetService
             result.Messages = "PET_NOT_FOUND";
             return result;
         }
+
         pet.Name = userUpdateDTO.Name;
         pet.Species = userUpdateDTO.Species;
         pet.Breed = userUpdateDTO.Breed;

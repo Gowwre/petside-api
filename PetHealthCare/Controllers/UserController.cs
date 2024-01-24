@@ -8,8 +8,8 @@ namespace PetHealthCare.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
     private readonly ILogger _logger;
+    private readonly IUserService _userService;
 
     public UserController(IUserService userService, ILogger<UserController> logger)
     {
@@ -23,13 +23,8 @@ public class UserController : ControllerBase
         try
         {
             if (ModelState.IsValid)
-            {
                 return StatusCode(200, await _userService.LoginAsync(loginDTO));
-            }
-            else
-            {
-                return StatusCode(400, ModelState);
-            }
+            return StatusCode(400, ModelState);
         }
         catch (Exception ex)
         {
@@ -49,10 +44,7 @@ public class UserController : ControllerBase
     [HttpPost("register-member")]
     public async Task<IActionResult> CreateUserAccount(UserRegistrationDto userRegistrationDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         return Ok(await _userService.CreateUserAsync(userRegistrationDto));
     }

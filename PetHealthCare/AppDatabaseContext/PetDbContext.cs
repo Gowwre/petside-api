@@ -39,11 +39,7 @@ public class PetDbContext : DbContext
             // entity.Navigation(p => p.Users).AutoInclude();
         });
 
-        modelBuilder.Entity<UsersRole>(entity =>
-        {
-            entity.HasKey(ur => new { ur.RoleId, ur.UsersId });
-        });
-
+        modelBuilder.Entity<UsersRole>(entity => { entity.HasKey(ur => new { ur.RoleId, ur.UsersId }); });
     }
 
     public void Initialize()
@@ -83,8 +79,8 @@ public class PetDbContext : DbContext
 
         if (!Users.Any())
         {
-            PasswordHashUtils.CreatePasswordHash("SuperAdmin", out byte[] passwordHash, out byte[] passwordSalt);
-            Role adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
+            PasswordHashUtils.CreatePasswordHash("SuperAdmin", out var passwordHash, out var passwordSalt);
+            var adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
             Users.Add(new Users
             {
                 Avatar = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
@@ -95,7 +91,7 @@ public class PetDbContext : DbContext
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = "sd",
-                UsersRoles = new List<UsersRole> { new UsersRole { Role = adminRole } }
+                UsersRoles = new List<UsersRole> { new() { Role = adminRole } }
             });
             SaveChanges();
         }

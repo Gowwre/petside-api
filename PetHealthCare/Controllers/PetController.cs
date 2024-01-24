@@ -3,12 +3,13 @@ using PetHealthCare.Model.DTO;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/pets")]
 [ApiController]
 public class PetController : ControllerBase
 {
-    private readonly IPetService _petService;
     private readonly ILogger _logger;
+    private readonly IPetService _petService;
 
     public PetController(IPetService petService, ILogger<PetController> logger)
     {
@@ -70,10 +71,7 @@ public class PetController : ControllerBase
     [HttpPost("CreatePet/{OwnerId}")]
     public async Task<IActionResult> CreatePetInformation(Guid OwnerId, PetDTO petDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(_petService.CreatePetAsync(petDTO, OwnerId));
         //try
         //{
@@ -100,6 +98,7 @@ public class PetController : ControllerBase
         //    return StatusCode(statusCode, errorMessage);
         //}
     }
+
     [HttpGet("getAllPetInformation")]
     public IActionResult GetAllUser()
     {

@@ -9,8 +9,8 @@ namespace PetHealthCare.Services.Impl;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
     {
@@ -21,21 +21,17 @@ public class UserService : IUserService
     public async Task<Users> LoginAsync(LoginDTO loginDTO)
     {
         var user = _userRepository.GetAll().Where(x => x.Email == loginDTO.Email).FirstOrDefault();
-        if (user == null)
-        {
-            throw new Exception("ACCOUNT_NOT_FOUND");
-        }
+        if (user == null) throw new Exception("ACCOUNT_NOT_FOUND");
         if (!PasswordHashUtils.VerifyPasswordHash(loginDTO.Password, user.PasswordHash, user.PasswordSalt))
-        {
             throw new Exception("INVALID_PASSWORD");
-        }
         return user;
     }
+
     public async Task<ResultResponse<Users>> CreateUserAsync(UserRegistrationDto userRegistrationDto)
     {
-        ResultResponse<Users> result = new ResultResponse<Users>();
+        var result = new ResultResponse<Users>();
         var roleOwner = _roleRepository.GetAll().Where(x => x.RoleName == RoleName.OWNER).FirstOrDefault();
-        PasswordHashUtils.CreatePasswordHash(userRegistrationDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+        PasswordHashUtils.CreatePasswordHash(userRegistrationDto.Password, out var passwordHash, out var passwordSalt);
         try
         {
             result.Data = await _userRepository.AddAsync(new Users
@@ -46,7 +42,7 @@ public class UserService : IUserService
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userRegistrationDto.PhoneNumber,
-                UsersRoles = new List<UsersRole> { new UsersRole { Role = roleOwner } }
+                UsersRoles = new List<UsersRole> { new() { Role = roleOwner } }
             });
             result.Success = true;
             result.Messages = "Create User Successfully";
@@ -58,18 +54,19 @@ public class UserService : IUserService
             //throw new Exception("CREATE_USER_FAIL");
             //return await Result<Users>.FailureAsync("Create User Fail");
         }
+
         return result;
     }
 
     public async Task<PaginatedList<Users>> GetUserPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO)
     {
         return await PaginatedList<Users>.CreateAsync(_userRepository.GetAll()
-           , getWithPaginationQueryDTO.PageNumber, getWithPaginationQueryDTO.PageSize);
+            , getWithPaginationQueryDTO.PageNumber, getWithPaginationQueryDTO.PageSize);
     }
 
     public async Task<ResultResponse<Users>> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO)
     {
-        ResultResponse<Users> result = new ResultResponse<Users>();
+        var result = new ResultResponse<Users>();
         var user = _userRepository.GetById(userId);
         if (user == null)
         {
@@ -95,7 +92,7 @@ public class UserService : IUserService
 
     public async Task<ResultResponse<Users>> GetUserAsync(Guid userId)
     {
-        ResultResponse<Users> result = new ResultResponse<Users>();
+        var result = new ResultResponse<Users>();
         var user = _userRepository.GetById(userId);
         if (user == null)
         {
@@ -110,6 +107,7 @@ public class UserService : IUserService
             result.Success = true;
             result.Messages = "Find User In Database";
         }
+
         return result;
     }
 

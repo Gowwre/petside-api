@@ -1,10 +1,10 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.AppDatabaseContext;
 using PetHealthCare.Repository;
 using PetHealthCare.Repository.Impl;
 using PetHealthCare.Services;
 using PetHealthCare.Services.Impl;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,7 @@ builder.Services.AddDbContext<PetDbContext>(options =>
         .UseLazyLoadingProxies()
         .EnableSensitiveDataLogging()
 );
+
 
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IUserService, UserService>();
