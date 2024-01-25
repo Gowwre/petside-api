@@ -49,7 +49,7 @@ public class UserController : ControllerBase
         return Ok(await _userService.CreateUserAsync(userRegistrationDto));
     }
 
-    [HttpPost("updateInformation/{id}")]
+    [HttpPut("updateInformation/{id}")]
     public async Task<IActionResult> UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
     {
         return Ok(_userService.UpdateUserAsync(id, userUpdateDTO));

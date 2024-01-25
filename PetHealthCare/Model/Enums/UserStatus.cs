@@ -3,5 +3,6 @@
 public enum UserStatus
 {
     ACTIVE,
-    INACTIVE
+    INACTIVE,
+    PRO
 }

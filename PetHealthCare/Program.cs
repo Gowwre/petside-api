@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.AppDatabaseContext;
+using PetHealthCare.Config;
 using PetHealthCare.Repository;
 using PetHealthCare.Repository.Impl;
 using PetHealthCare.Services;
@@ -14,6 +15,8 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.RegisterMapsterConfiguration();
+
 builder.Services.AddDbContext<PetDbContext>(options =>
     options.UseSqlServer(
             builder.Configuration.GetConnectionString("PetAppContext"))
@@ -25,11 +28,16 @@ builder.Services.AddDbContext<PetDbContext>(options =>
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPetService, PetService>();
+builder.Services.AddTransient<IOfferingsService, OfferingsService>();
+builder.Services.AddTransient<IAppointmentService, AppointmentService>();
+builder.Services.AddTransient<IProvidersService, ProvidersService>();
 
 builder.Services.AddTransient<IRoleRepository, RoleRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IPetRepository, PetRepository>();
-
+builder.Services.AddTransient<IOfferingsRepository, OfferingsRepository>();
+builder.Services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddTransient<IProvidersRepository, ProvidersRepository>();
 //builder.Services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBaseImpl<>))
 //    .AddTransient<IRoleRepository, RoleRepository>()
 //    .AddTransient<IUserRepository, UserRepository>();

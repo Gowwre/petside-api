@@ -1,4 +1,5 @@
-﻿using PetHealthCare.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using PetHealthCare.Model;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Model.Enums;
@@ -48,11 +49,14 @@ public class UserService : IUserService
             result.Messages = "Create User Successfully";
             result.Code = 201;
         }
+        catch (DbUpdateException ex)
+        {
+            result.Messages = "EMAIL_ALREADY_EXISTS";
+        }
         catch (Exception ex)
         {
-            result.Messages = "CREATE_USER_FAIL";
-            //throw new Exception("CREATE_USER_FAIL");
-            //return await Result<Users>.FailureAsync("Create User Fail");
+            result.Messages = ex.Message;
+
         }
 
         return result;
