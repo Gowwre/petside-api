@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetHealthCare.Model.DTO;
+using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -16,8 +16,8 @@ public class PetController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("updatePet/{id}")]
-    public async Task<IActionResult> UpdatePetInfomation(Guid id, PetDTO petDTO)
+    [HttpPut("updatePet/{id}")]
+    public async Task<IActionResult> UpdatePetInfomation(Guid id, PetRequestDTO petRequestDTO)
     {
         //try
         //{
@@ -42,7 +42,7 @@ public class PetController : ControllerBase
         //    _logger.LogError(statusCode, errorMessage);
         //    return StatusCode(statusCode, errorMessage);
         //}
-        return Ok(_petService.UpdatePetAsync(id, petDTO));
+        return Ok(await _petService.UpdatePetAsync(id, petRequestDTO));
     }
 
     [HttpGet("getPetInformation/{id}")]
@@ -62,19 +62,19 @@ public class PetController : ControllerBase
         //        _ => ("Server error", 500)
         //    };
         //    _logger.LogError(statusCode, errorMessage);
-        //    return StatusCode(statusCode, errorMessage);
+        //    return StatusCode(statusCode, errorMessage); /{AppointmentId}  , Guid AppointmentId
         //}
-        return Ok(_petService.GetPetAsync(id));
+        return Ok(await _petService.GetPetAsync(id));
     }
 
-    [HttpPost("CreatePet/{OwnerId}")]
-    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, PetDTO petDTO)
+    [HttpPost("CreatePet/{OwnerId}/{AppointmentId}")]
+    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, Guid AppointmentId, [FromBody] PetRequestDTO petRequestDTO)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        return Ok(_petService.CreatePetAsync(petDTO, OwnerId));
+        return Ok(await _petService.CreatePetAsync(petRequestDTO, OwnerId, AppointmentId));
         //try
         //{
         //    if (ModelState.IsValid)

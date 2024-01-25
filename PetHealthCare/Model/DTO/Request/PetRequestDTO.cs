@@ -1,14 +1,13 @@
 ﻿using PetHealthCare.Model.Enums;
 
-namespace PetHealthCare.Model.DTO;
+namespace PetHealthCare.Model.DTO.Request;
 
-public class PetDTO
+public class PetRequestDTO
 {
     public string Name { get; set; }
     public string Species { get; set; }
-    public string Breed { get; set; }
-    public string BirthDate { get; set; }
-    public int Age { get; set; }
+    public string? ImagePet { get; set; }
+    public DateTime BirthDate { get; set; }
     public PetStatus Gender { get; set; }
     public double Weight { get; set; }
 }

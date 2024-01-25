@@ -1,5 +1,6 @@
-﻿using PetHealthCare.Model;
-using PetHealthCare.Model.DTO;
+﻿using Mapster;
+using PetHealthCare.Model;
+using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Repository;
 
@@ -9,37 +10,34 @@ public class PetService : IPetService
 {
     private readonly IUserRepository _userRepository;
     private readonly IPetRepository _petRepository;
+    private readonly IAppointmentRepository _appointmentRepository;
 
-    public PetService(IUserRepository userRepository, IPetRepository petRepository)
+    public PetService(IUserRepository userRepository, IPetRepository petRepository, IAppointmentRepository appointmentRepository)
     {
         _userRepository = userRepository;
         _petRepository = petRepository;
+        _appointmentRepository = appointmentRepository;
     }
 
-    public async Task<ResultResponse<Pets>> CreatePetAsync(PetDTO petDTO, Guid userId)
+    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId, Guid AppointmentId)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
-        if (ownerPet == null)
+        var appointment = _appointmentRepository.GetById(AppointmentId);
+        if (ownerPet == null || appointment == null)
         {
             result.Code = 300;
             result.Success = false;
-            result.Messages = "OWNER_NOT_FOUND";
+            result.Messages = ownerPet == null ? "OWNER_NOT_FOUND" : "APPOINTMENT_NOT_FOUND";
             return result;
         }
         try
         {
-            result.Data = await _petRepository.AddAsync(new Pets
-            {
-                Name = petDTO.Name,
-                Species = petDTO.Species,
-                Breed = petDTO.Breed,
-                BirthDate = petDTO.BirthDate,
-                Age = petDTO.Age,
-                Gender = petDTO.Gender,
-                Weight = petDTO.Weight,
-                Users = ownerPet
-            });
+            Pets pet = new Pets();
+            petRequestDTO.Adapt(pet);
+            pet.Users = ownerPet;
+            pet.Appointment = appointment;
+            result.Data = (await _petRepository.AddAsync(pet)).Adapt<PetResponserDTO>();
             result.Code = 201;
             result.Success = true;
             result.Messages = "Create Pet Successfully";
@@ -48,20 +46,21 @@ public class PetService : IPetService
         {
             result.Code = 300;
             result.Success = false;
-            result.Messages = "CREATE_PET_FAIL";
+            result.Messages = ex.Message;
 
         }
         return result;
     }
 
-    public List<Pets> GetAllPet()
+    public List<PetResponserDTO> GetAllPet()
     {
-        return _petRepository.GetAll().ToList();
+        // _offeringsRepository.GetAll().ProjectToType<OfferResonseDTO>().ToList();
+        return _petRepository.GetAll().ProjectToType<PetResponserDTO>().ToList();
     }
 
-    public async Task<ResultResponse<Pets>> GetPetAsync(Guid petId)
+    public async Task<ResultResponse<PetResponserDTO>> GetPetAsync(Guid petId)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -72,14 +71,14 @@ public class PetService : IPetService
         }
         result.Code = 200;
         result.Success = true;
-        result.Data = pet;
+        result.Data = pet.Adapt<PetResponserDTO>();
         result.Messages = "Get Pet Successfully";
         return result;
     }
 
-    public async Task<ResultResponse<Pets>> UpdatePetAsync(Guid petId, PetDTO userUpdateDTO)
+    public async Task<ResultResponse<PetResponserDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO)
     {
-        ResultResponse<Pets> result = new ResultResponse<Pets>();
+        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -88,18 +87,11 @@ public class PetService : IPetService
             result.Messages = "PET_NOT_FOUND";
             return result;
         }
-        pet.Name = userUpdateDTO.Name;
-        pet.Species = userUpdateDTO.Species;
-        pet.Breed = userUpdateDTO.Breed;
-        pet.BirthDate = userUpdateDTO.BirthDate;
-        pet.Age = userUpdateDTO.Age;
-        pet.Gender = userUpdateDTO.Gender;
-        pet.Weight = userUpdateDTO.Weight;
-        _petRepository.Update(pet);
+        _petRepository.Update(petRequestDTO.Adapt(pet));
 
         result.Code = 200;
         result.Success = true;
-        result.Data = _petRepository.GetById(petId);
+        result.Data = _petRepository.GetById(petId).Adapt<PetResponserDTO>();
         result.Messages = "Update Pet Successfully";
 
         return result;
