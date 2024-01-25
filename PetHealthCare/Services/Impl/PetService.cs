@@ -8,6 +8,7 @@ namespace PetHealthCare.Services.Impl;
 
 public class PetService : IPetService
 {
+    private readonly IUserRepository _userRepository;
     private readonly IPetRepository _petRepository;
     private readonly IAppointmentRepository _appointmentRepository;
 
