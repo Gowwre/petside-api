@@ -10,7 +10,7 @@ public class PetDbContext : DbContext
     public PetDbContext(DbContextOptions options) : base(options)
     {
         // commit lại lúc tạo database hoặc file Migrations
-        //Initialize();
+        // Initialize();
     }
 
     public DbSet<Users> Users { get; set; }
