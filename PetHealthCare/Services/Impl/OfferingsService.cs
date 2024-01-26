@@ -17,9 +17,10 @@ public class OfferingsService : IOfferingsService
         _providersRepository = providersRepository;
     }
 
-    public async Task<ResultResponse<OfferResonseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO, Guid providerId)
+    public async Task<ResultResponse<OfferResonseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO,
+        Guid providerId)
     {
-        ResultResponse<OfferResonseDTO> result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResonseDTO>();
         try
         {
             var offer = offeringsDTO.Adapt<Offerings>();
@@ -27,7 +28,7 @@ public class OfferingsService : IOfferingsService
             if (provider != null)
             {
                 offer.Providers = provider;
-                OfferResonseDTO resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResonseDTO>();
+                var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResonseDTO>();
                 resultOffer.ProviderResponse = provider.Adapt<ProviderResponseDTO>();
                 result.Data = resultOffer;
                 result.Success = true;
@@ -45,6 +46,7 @@ public class OfferingsService : IOfferingsService
         {
             result.Messages = ex.Message;
         }
+
         return result;
     }
 
@@ -55,7 +57,7 @@ public class OfferingsService : IOfferingsService
 
     public async Task<ResultResponse<OfferResonseDTO>> GetOfferingsAsync(Guid offeringsId)
     {
-        ResultResponse<OfferResonseDTO> result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResonseDTO>();
         var offer = _offeringsRepository.GetById(offeringsId);
         if (offer == null)
         {
@@ -70,12 +72,14 @@ public class OfferingsService : IOfferingsService
             result.Success = true;
             result.Messages = "FIND_OFFER_IN_DATABASE";
         }
+
         return result;
     }
 
-    public async Task<ResultResponse<OfferResonseDTO>> UpdateOfferingsAsync(Guid offeringsId, OfferRequestDTO offeringsDTO)
+    public async Task<ResultResponse<OfferResonseDTO>> UpdateOfferingsAsync(Guid offeringsId,
+        OfferRequestDTO offeringsDTO)
     {
-        ResultResponse<OfferResonseDTO> result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResonseDTO>();
         var offer = _offeringsRepository.GetById(offeringsId);
         if (offer == null)
         {
@@ -84,6 +88,7 @@ public class OfferingsService : IOfferingsService
             result.Messages = "OFFER_NOT_FOUND";
             return result;
         }
+
         offer.Description = offeringsDTO.Description;
         offer.ServiceName = offeringsDTO.ServiceName;
         offer.Price = offeringsDTO.Price;

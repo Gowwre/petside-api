@@ -10,23 +10,25 @@ namespace PetHealthCare.Services.Impl;
 public class AppointmentService : IAppointmentService
 {
     private readonly IAppointmentRepository _appointmentRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IOfferingsRepository _offeringsRepository;
+    private readonly IUserRepository _userRepository;
 
-    public AppointmentService(IAppointmentRepository appointmentRepository, IUserRepository userRepository, IOfferingsRepository offeringsRepository)
+    public AppointmentService(IAppointmentRepository appointmentRepository, IUserRepository userRepository,
+        IOfferingsRepository offeringsRepository)
     {
         _appointmentRepository = appointmentRepository;
         _userRepository = userRepository;
         _offeringsRepository = offeringsRepository;
     }
 
-    public async Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId)
+    public async Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(
+        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId)
     {
-        ResultResponse<AppointmentResponseDTO> result = new ResultResponse<AppointmentResponseDTO>();
+        var result = new ResultResponse<AppointmentResponseDTO>();
         try
         {
-            Users user = _userRepository.GetById(userId);
-            Appointment appointment = new Appointment();
+            var user = _userRepository.GetById(userId);
+            var appointment = new Appointment();
 
             appointmentDTO.AppointmentStatus = AppointmentStatus.PENDING_CONFIRMATION;
             appointmentDTO.Adapt(appointment);
@@ -34,7 +36,8 @@ public class AppointmentService : IAppointmentService
             appointment.OfferAppointments = new List<OfferAppointment>();
             OfferId?.ForEach(x =>
             {
-                appointment.OfferAppointments?.Add(new OfferAppointment { Offerings = _offeringsRepository.GetById(x) });
+                appointment.OfferAppointments?.Add(new OfferAppointment
+                    { Offerings = _offeringsRepository.GetById(x) });
             });
 
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
@@ -55,6 +58,7 @@ public class AppointmentService : IAppointmentService
         {
             result.Messages = ex.Message;
         }
+
         return result;
     }
 
@@ -65,7 +69,7 @@ public class AppointmentService : IAppointmentService
 
     public async Task<ResultResponse<AppointmentResponseDTO>> GetAppointmentAsync(Guid appointmentId)
     {
-        ResultResponse<AppointmentResponseDTO> result = new ResultResponse<AppointmentResponseDTO>();
+        var result = new ResultResponse<AppointmentResponseDTO>();
         var appointmentDb = _appointmentRepository.GetById(appointmentId);
         if (appointmentDb != null)
         {
@@ -86,12 +90,14 @@ public class AppointmentService : IAppointmentService
             result.Success = false;
             result.Messages = "APPOINTMENT_NOT_FOUND";
         }
+
         return result;
     }
 
-    public async Task<ResultResponse<AppointmentResponseDTO>> UpdateAppointmentAsync(Guid appointmentId, AppointmentRequestDTO appointmentDTO)
+    public async Task<ResultResponse<AppointmentResponseDTO>> UpdateAppointmentAsync(Guid appointmentId,
+        AppointmentRequestDTO appointmentDTO)
     {
-        ResultResponse<AppointmentResponseDTO> result = new ResultResponse<AppointmentResponseDTO>();
+        var result = new ResultResponse<AppointmentResponseDTO>();
         var appointmentDb = _appointmentRepository.GetById(appointmentId);
         if (appointmentDb == null)
         {
@@ -100,7 +106,8 @@ public class AppointmentService : IAppointmentService
             result.Messages = "APPOINTMENT_NOT_FOUND";
             return result;
         }
-        appointmentDTO.AppointmentStatus = appointmentDb.AppointmentStatus;   // giu nguyen status
+
+        appointmentDTO.AppointmentStatus = appointmentDb.AppointmentStatus; // giu nguyen status
         _appointmentRepository.Update(appointmentDTO.Adapt(appointmentDb));
         var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
         appointmentResponseObject.OfferingsDto = new List<OfferResonseDTO>();

@@ -3,12 +3,13 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/providers")]
 [ApiController]
 public class ProvidersController : ControllerBase
 {
-    private readonly IProvidersService _providersService;
     private readonly ILogger _logger;
+    private readonly IProvidersService _providersService;
 
     public ProvidersController(IProvidersService providersService, ILogger<ProvidersController> logger)
     {
@@ -37,10 +38,7 @@ public class ProvidersController : ControllerBase
     [HttpPost("CreateProvider")]
     public async Task<IActionResult> CreateOfferInformation(ProviderRequestDTO providersDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _providersService.CreateProvidersAsync(providersDTO));
     }
 }

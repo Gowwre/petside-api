@@ -8,20 +8,22 @@ namespace PetHealthCare.Services.Impl;
 
 public class PetService : IPetService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IPetRepository _petRepository;
     private readonly IAppointmentRepository _appointmentRepository;
+    private readonly IPetRepository _petRepository;
+    private readonly IUserRepository _userRepository;
 
-    public PetService(IUserRepository userRepository, IPetRepository petRepository, IAppointmentRepository appointmentRepository)
+    public PetService(IUserRepository userRepository, IPetRepository petRepository,
+        IAppointmentRepository appointmentRepository)
     {
         _userRepository = userRepository;
         _petRepository = petRepository;
         _appointmentRepository = appointmentRepository;
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId, Guid AppointmentId)
+    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId,
+        Guid AppointmentId)
     {
-        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponserDTO>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
         var appointment = _appointmentRepository.GetById(AppointmentId);
         if (ownerPet == null || appointment == null)
@@ -34,7 +36,7 @@ public class PetService : IPetService
 
         try
         {
-            Pets pet = new Pets();
+            var pet = new Pets();
             petRequestDTO.Adapt(pet);
             pet.Users = ownerPet;
             pet.Appointment = appointment;
@@ -48,7 +50,6 @@ public class PetService : IPetService
             result.Code = 300;
             result.Success = false;
             result.Messages = ex.Message;
-
         }
 
         return result;
@@ -62,7 +63,7 @@ public class PetService : IPetService
 
     public async Task<ResultResponse<PetResponserDTO>> GetPetAsync(Guid petId)
     {
-        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponserDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -81,7 +82,7 @@ public class PetService : IPetService
 
     public async Task<ResultResponse<PetResponserDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO)
     {
-        ResultResponse<PetResponserDTO> result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponserDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -90,6 +91,7 @@ public class PetService : IPetService
             result.Messages = "PET_NOT_FOUND";
             return result;
         }
+
         _petRepository.Update(petRequestDTO.Adapt(pet));
 
         result.Code = 200;

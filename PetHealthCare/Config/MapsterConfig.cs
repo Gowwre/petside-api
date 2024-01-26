@@ -9,6 +9,5 @@ public static class MapsterConfig
         //   .NewConfig()
         //   .TwoWays();
         //TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
-
     }
 }

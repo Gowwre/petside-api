@@ -4,8 +4,8 @@ namespace PetHealthCare.Model.DTO.Response;
 
 public class ProviderResponseDTO
 {
-    [AdaptMember(nameof(Providers.Id))]
-    public Guid? ProviderId { get; set; } = null;
+    [AdaptMember(nameof(Providers.Id))] public Guid? ProviderId { get; set; } = null;
+
     public string? ProviderName { get; set; }
     public string? ContactInformation { get; set; }
     public string? ServiceType { get; set; }

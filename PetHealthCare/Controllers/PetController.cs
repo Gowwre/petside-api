@@ -69,12 +69,10 @@ public class PetController : ControllerBase
     }
 
     [HttpPost("CreatePet/{OwnerId}/{AppointmentId}")]
-    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, Guid AppointmentId, [FromBody] PetRequestDTO petRequestDTO)
+    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, Guid AppointmentId,
+        [FromBody] PetRequestDTO petRequestDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _petService.CreatePetAsync(petRequestDTO, OwnerId, AppointmentId));
         //try
         //{

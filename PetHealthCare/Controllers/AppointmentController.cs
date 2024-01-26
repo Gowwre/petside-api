@@ -3,6 +3,7 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/appointment")]
 [ApiController]
 public class AppointmentController : ControllerBase
@@ -17,7 +18,8 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpPost("createAppointment/{userId}")]
-    public async Task<IActionResult> UpdateAppointmentInfomation(Guid userId, AppointmentRequestDTO appointmentDTO, [FromQuery] List<Guid> listGuidOffer)
+    public async Task<IActionResult> UpdateAppointmentInfomation(Guid userId, AppointmentRequestDTO appointmentDTO,
+        [FromQuery] List<Guid> listGuidOffer)
     {
         return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer));
     }

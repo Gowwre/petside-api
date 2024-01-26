@@ -17,7 +17,7 @@ public class ProvidersService : IProvidersService
 
     public async Task<ResultResponse<ProviderResponseDTO>> CreateProvidersAsync(ProviderRequestDTO providersDTO)
     {
-        ResultResponse<ProviderResponseDTO> result = new ResultResponse<ProviderResponseDTO>();
+        var result = new ResultResponse<ProviderResponseDTO>();
         try
         {
             var provider = await _providersRepository.AddAsync(providersDTO.Adapt<Providers>());
@@ -31,6 +31,7 @@ public class ProvidersService : IProvidersService
             //result.Messages = "CREATE_PROVIDER_FAIL";
             result.Messages = ex.Message;
         }
+
         return result;
     }
 
@@ -41,7 +42,7 @@ public class ProvidersService : IProvidersService
 
     public async Task<ResultResponse<ProviderResponseDTO>> GetProvidersAsync(Guid providersId)
     {
-        ResultResponse<ProviderResponseDTO> result = new ResultResponse<ProviderResponseDTO>();
+        var result = new ResultResponse<ProviderResponseDTO>();
         var provider = _providersRepository.GetById(providersId);
         if (provider == null)
         {
@@ -56,12 +57,14 @@ public class ProvidersService : IProvidersService
             result.Success = true;
             result.Messages = "FIND_PROVIDER_IN_DATABASE";
         }
+
         return result;
     }
 
-    public async Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId, ProviderRequestDTO providersDTO)
+    public async Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,
+        ProviderRequestDTO providersDTO)
     {
-        ResultResponse<ProviderResponseDTO> result = new ResultResponse<ProviderResponseDTO>();
+        var result = new ResultResponse<ProviderResponseDTO>();
         var provider = _providersRepository.GetById(providersId);
         if (provider == null)
         {
@@ -70,6 +73,7 @@ public class ProvidersService : IProvidersService
             result.Messages = "PROVIDER_NOT_FOUND";
             return result;
         }
+
         //providersDTO.ProviderId = provider.Id;
         _providersRepository.Update(providersDTO.Adapt(provider));
         result.Code = 200;

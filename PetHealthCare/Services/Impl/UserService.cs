@@ -56,7 +56,6 @@ public class UserService : IUserService
         catch (Exception ex)
         {
             result.Messages = ex.Message;
-
         }
 
         return result;

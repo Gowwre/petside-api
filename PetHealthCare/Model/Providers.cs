@@ -12,5 +12,4 @@ public class Providers : Common
     public string? Description { get; set; }
     public string? Location { get; set; }
     public virtual ICollection<Offerings>? Offerings { get; set; }
-
 }

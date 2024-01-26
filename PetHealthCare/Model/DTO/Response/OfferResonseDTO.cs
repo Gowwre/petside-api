@@ -4,11 +4,11 @@ namespace PetHealthCare.Model.DTO.Response;
 
 public class OfferResonseDTO
 {
-    [AdaptMember(nameof(Offerings.Id))]
-    public Guid? OfferId { get; set; } = null;
+    [AdaptMember(nameof(Offerings.Id))] public Guid? OfferId { get; set; } = null;
+
     public string ServiceName { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }
-    [AdaptMember(nameof(Providers))]
-    public virtual ProviderResponseDTO? ProviderResponse { get; set; }
+
+    [AdaptMember(nameof(Providers))] public virtual ProviderResponseDTO? ProviderResponse { get; set; }
 }

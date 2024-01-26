@@ -53,10 +53,7 @@ public class PetDbContext : DbContext
             entity.HasKey(oa => new { oa.AppointmentId, oa.OfferingsId });
         });
 
-        modelBuilder.Entity<UsersRole>(entity =>
-        {
-            entity.HasKey(ur => new { ur.RoleId, ur.UsersId });
-        });
+        modelBuilder.Entity<UsersRole>(entity => { entity.HasKey(ur => new { ur.RoleId, ur.UsersId }); });
 
         modelBuilder.Entity<Appointment>()
             .HasMany(a => a.Pets)
@@ -73,7 +70,6 @@ public class PetDbContext : DbContext
             .WithOne(u => u.Users)
             .HasForeignKey(u => u.UsersId)
             .OnDelete(DeleteBehavior.NoAction);
-
     }
 
     public async void Initialize()
@@ -113,8 +109,8 @@ public class PetDbContext : DbContext
 
         if (!Users.Any())
         {
-            PasswordHashUtils.CreatePasswordHash("SuperAdmin", out byte[] passwordHash, out byte[] passwordSalt);
-            Role adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
+            PasswordHashUtils.CreatePasswordHash("SuperAdmin", out var passwordHash, out var passwordSalt);
+            var adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
             var user = Users.Add(new Users
             {
                 Avatar = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
