@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginDTO loginDTO)
+    public async Task<ActionResult<Users>> LoginAsync(LoginDTO loginDTO)
     {
         try
         {
