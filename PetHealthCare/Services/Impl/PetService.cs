@@ -20,17 +20,15 @@ public class PetService : IPetService
         _appointmentRepository = appointmentRepository;
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId,
-        Guid AppointmentId)
+    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId)
     {
         var result = new ResultResponse<PetResponserDTO>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
-        var appointment = _appointmentRepository.GetById(AppointmentId);
-        if (ownerPet == null || appointment == null)
+        if (ownerPet == null)
         {
             result.Code = 300;
             result.Success = false;
-            result.Messages = ownerPet == null ? "OWNER_NOT_FOUND" : "APPOINTMENT_NOT_FOUND";
+            result.Messages = "OWNER_NOT_FOUND";
             return result;
         }
 
@@ -39,7 +37,6 @@ public class PetService : IPetService
             var pet = new Pets();
             petRequestDTO.Adapt(pet);
             pet.Users = ownerPet;
-            pet.Appointment = appointment;
             result.Data = (await _petRepository.AddAsync(pet)).Adapt<PetResponserDTO>();
             result.Code = 201;
             result.Success = true;
