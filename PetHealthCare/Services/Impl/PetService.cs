@@ -31,7 +31,7 @@ public class PetService : IPetService
         {
             result.Code = 300;
             result.Success = false;
-            result.Messages = ownerPet == null ? "OWNER_NOT_FOUND" : "APPOINTMENT_NOT_FOUND";
+            result.Messages = "OWNER_NOT_FOUND";
             return result;
         }
 
