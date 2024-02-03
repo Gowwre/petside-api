@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetHealthCare.Model;
-using PetHealthCare.Model.Enums;
-using PetHealthCare.Utils;
 
 namespace PetHealthCare.AppDatabaseContext;
 
@@ -9,8 +7,6 @@ public class PetDbContext : DbContext
 {
     public PetDbContext(DbContextOptions options) : base(options)
     {
-        // commit lại lúc tạo database hoặc file Migrations
-        // Initialize();
     }
 
     public DbSet<Users> Users { get; set; }
@@ -19,6 +15,9 @@ public class PetDbContext : DbContext
     public DbSet<Offerings> Offerings { get; set; }
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Providers> Providers { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<Membership> Memberships { get; set; }
+    public DbSet<MemberUser> MemberUsers { get; set; }
 
     public DbSet<UsersRole> UsersRoles { get; set; }
     public DbSet<OfferAppointment> OfferAppointments { get; set; }
@@ -36,7 +35,7 @@ public class PetDbContext : DbContext
             entity.Navigation(u => u.UsersRoles).AutoInclude();
             entity.HasIndex(u => u.Email).IsUnique();
             // entity.Navigation(u => u.Pets).AutoInclude();
-            // entity.HasIndex(u => u.Email).IsUnique(); tôi có thể bắt lỗi gì khi save vào database
+            // entity.HasIndex(u => u.Email).IsUnique(); 
         });
         modelBuilder.Entity<Pets>(entity =>
         {
@@ -46,6 +45,21 @@ public class PetDbContext : DbContext
         modelBuilder.Entity<Appointment>(entity =>
         {
             entity.Property(s => s.AppointmentStatus).HasConversion<string>();
+            entity.Property(a => a.AppointmentFee).HasColumnType("decimal(18,2)");
+        });
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.Property(s => s.Status).HasConversion<string>();
+
+        });
+        modelBuilder.Entity<Membership>(entity =>
+        {
+            entity.Property(s => s.Status).HasConversion<string>();
+
+        });
+        modelBuilder.Entity<Offerings>(entity =>
+        {
+            entity.Property(a => a.Price).HasColumnType("decimal(18,2)");
         });
 
         modelBuilder.Entity<OfferAppointment>(entity =>
@@ -60,6 +74,7 @@ public class PetDbContext : DbContext
             .WithOne(a => a.Appointment)
             .HasForeignKey(a => a.AppointmentId)
             .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<Users>()
             .HasMany(u => u.Pets)
             .WithOne(u => u.Users)
@@ -72,59 +87,4 @@ public class PetDbContext : DbContext
             .OnDelete(DeleteBehavior.NoAction);
     }
 
-    public async void Initialize()
-    {
-        if (!Roles.Any())
-        {
-            Roles.Add(new Role
-            {
-                RoleName = RoleName.ADMIN,
-                CreateDateTime = DateTime.Now
-            });
-
-            Roles.Add(new Role
-            {
-                RoleName = RoleName.OWNER,
-                CreateDateTime = DateTime.Now
-            });
-
-            Roles.Add(new Role
-            {
-                RoleName = RoleName.CARETAKER,
-                CreateDateTime = DateTime.Now
-            });
-
-            Roles.Add(new Role
-            {
-                RoleName = RoleName.MEMBER,
-                CreateDateTime = DateTime.Now
-            });
-            Roles.Add(new Role
-            {
-                RoleName = RoleName.MODERATOR,
-                CreateDateTime = DateTime.Now
-            });
-            SaveChanges();
-        }
-
-        if (!Users.Any())
-        {
-            PasswordHashUtils.CreatePasswordHash("SuperAdmin", out var passwordHash, out var passwordSalt);
-            var adminRole = Roles.FirstOrDefault(r => r.RoleName == RoleName.ADMIN);
-            var user = Users.Add(new Users
-            {
-                Avatar = "https://indotel.com.vn/wp-content/uploads/2022/07/hinh-anh-du-lich-ha-long8.jpg",
-                Email = "Admin@gmail.com",
-                DateOfBirth = "09/09/2001",
-                FullName = "Admin",
-                Address = "Admin",
-                Status = UserStatus.INACTIVE,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                PhoneNumber = "sd",
-                UsersRoles = new List<UsersRole> { new() { Role = adminRole } }
-            });
-            SaveChanges();
-        }
-    }
 }

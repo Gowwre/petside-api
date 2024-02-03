@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using PetHealthCare.Model;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Repository;
+using PetHealthCare.Utils;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -20,13 +22,12 @@ public class PetService : IPetService
         _appointmentRepository = appointmentRepository;
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId,
-        Guid AppointmentId)
+    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId)
     {
         var result = new ResultResponse<PetResponserDTO>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
-        var appointment = _appointmentRepository.GetById(AppointmentId);
-        if (ownerPet == null || appointment == null)
+        //var appointment = _appointmentRepository.GetById(AppointmentId);
+        if (ownerPet == null)
         {
             result.Code = 300;
             result.Success = false;
@@ -39,7 +40,7 @@ public class PetService : IPetService
             var pet = new Pets();
             petRequestDTO.Adapt(pet);
             pet.Users = ownerPet;
-            pet.Appointment = appointment;
+            //pet.Appointment = appointment;
             result.Data = (await _petRepository.AddAsync(pet)).Adapt<PetResponserDTO>();
             result.Code = 201;
             result.Success = true;
@@ -57,7 +58,6 @@ public class PetService : IPetService
 
     public List<PetResponserDTO> GetAllPet()
     {
-        // _offeringsRepository.GetAll().ProjectToType<OfferResonseDTO>().ToList();
         return _petRepository.GetAll().ProjectToType<PetResponserDTO>().ToList();
     }
 
@@ -101,4 +101,15 @@ public class PetService : IPetService
 
         return result;
     }
+    public async Task<PaginatedResponse<PetsDTO>> GetPetsPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO, string search)
+    {
+        PaginatedList<PetsDTO> pets = await _petRepository.FindPaginAsync<PetsDTO>(
+        getWithPaginationQueryDTO.PageNumber,
+        getWithPaginationQueryDTO.PageSize,
+        expression: _ => _.Name != null && _.Name.Contains(search),
+        orderBy: _ => _.OrderBy(p => p.Name)
+        );
+        return await pets.ToPaginatedResponseAsync();
+    }
+
 }

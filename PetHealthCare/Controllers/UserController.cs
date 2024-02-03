@@ -12,10 +12,10 @@ public class UserController : ControllerBase
     private readonly ILogger _logger;
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService, ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, IUserService userService)
     {
-        _userService = userService;
         _logger = logger;
+        _userService = userService;
     }
 
     [HttpPost("login")]
@@ -34,7 +34,7 @@ public class UserController : ControllerBase
             (errorMessage, statusCode) = ex.Message switch
             {
                 "ACCOUNT_NOT_FOUND" => (ex.Message, 404),
-                "INVALID PASSWORD" => (ex.Message, 401),
+                "INVALID_PASSWORD" => (ex.Message, 401),
                 _ => ("Server error", 500)
             };
             _logger.LogError(statusCode, errorMessage);
@@ -51,74 +51,25 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("updateInformation/{id}")]
-    public async Task<IActionResult> UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
+    public IActionResult UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
     {
         return Ok(_userService.UpdateUserAsync(id, userUpdateDTO));
-        //try
-        //{
-        //    if (await _userService.UpdateUserAsync(id, userUpdateDTO))
-        //    {
-        //        return StatusCode(200, "Update user Successfull");
-        //    }
-        //    else
-        //    {
-        //        return StatusCode(400, "Update user Fail");
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    int statusCode;
-        //    string errorMessage;
-        //    (errorMessage, statusCode) = ex.Message switch
-        //    {
-        //        "USER_NOT_FOUNF" => (ex.Message, 404),
-        //        _ => ("Server error", 500)
-        //    };
-        //    _logger.LogError(statusCode, errorMessage);
-        //    return StatusCode(statusCode, errorMessage);
-        //}
     }
-
-    //[HttpGet("getAllUser")]
-    //public async Task<IActionResult> GetAllUser(GetWithPaginationQueryDTO getWithPaginationQueryDTO)
-    //{
-    //    PaginatedList<Users> users = await _userService.GetUserPagin(getWithPaginationQueryDTO);
-    //    if (users == null)
-    //    {
-    //        return StatusCode(200, users);
-    //    }
-    //    else
-    //    {
-    //        return StatusCode(400, "List user Is Empty");
-    //    }
-
-    //}
 
     [HttpGet("getInformation/{id}")]
     public IActionResult GetInfomationUser(Guid id)
     {
-        //try
-        //{
-        //    return StatusCode(200, _userService.GetUserAsync(id));
-        //}
-        //catch (Exception ex)
-        //{
-        //    int statusCode;
-        //    string errorMessage;
-        //    (errorMessage, statusCode) = ex.Message switch
-        //    {
-        //        "USER_NOT_FOUND" => (ex.Message, 404),
-        //        _ => ("Server error", 500)
-        //    };
-        //    _logger.LogError(statusCode, errorMessage);
-        //    return StatusCode(statusCode, errorMessage);
-        //}
         return Ok(_userService.GetUserAsync(id));
     }
 
+    //[HttpGet("getAllInformation")]
+    //public IActionResult GetAllUser()
+    //{
+    //    return Ok(_userService.GetAllUser());
+    //}
     [HttpGet("getAllInformation")]
-    public IActionResult GetAllUser()
+    public async Task<IActionResult> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query)
     {
-        return Ok(_userService.GetAllUser());
+        return Ok(await _userService.GetUsersPagin(query));
     }
 }

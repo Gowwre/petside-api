@@ -16,6 +16,8 @@ public class Appointment : Common
     public AppointmentStatus AppointmentStatus { get; set; }
     public Guid UsersId { get; set; }
     public virtual Users? Users { get; set; }
+    public virtual Payment? Payment { get; set; }
+
     public virtual ICollection<Pets>? Pets { get; set; }
     public virtual ICollection<OfferAppointment>? OfferAppointments { get; set; }
 }

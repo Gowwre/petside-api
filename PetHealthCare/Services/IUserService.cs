@@ -1,4 +1,4 @@
-﻿using PetHealthCare.Model;
+﻿using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 
@@ -6,10 +6,14 @@ namespace PetHealthCare.Services;
 
 public interface IUserService
 {
-    public Task<Users> LoginAsync(LoginDTO loginDTO);
-    public Task<ResultResponse<Users>> CreateUserAsync(UserRegistrationDto userRegistrationDto);
-    public Task<ResultResponse<Users>> GetUserAsync(Guid userId);
-    public List<Users> GetAllUser();
-    public Task<ResultResponse<Users>> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO);
-    public Task<PaginatedList<Users>> GetUserPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO);
+    public Task<UserDTO> LoginAsync(LoginDTO loginDTO);
+
+    public Task<string> ForgotPassword(string email);
+    public Task<ResultResponse<UserDTO>> CreateUserAsync(UserRegistrationDto userRegistrationDto);
+    public ResultResponse<UserDTO> GetUserAsync(Guid userId);
+    public ResultResponse<UserDTO> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO);
+    public Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO);
+    public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO);
+    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId, Guid membership);
+
 }
