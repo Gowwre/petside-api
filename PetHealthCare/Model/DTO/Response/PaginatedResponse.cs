@@ -10,7 +10,7 @@ public class PaginatedResponse<T> where T : class
     public int TotalItems { get; }
     public bool HasPreviousPage { get; }
     public bool HasNextPage { get; }
-    public IList<T> Contends { get; }
+    public IList<T> Contents { get; }
 
     public PaginatedResponse(PaginatedList<T> paginatedList)
     {
@@ -20,7 +20,7 @@ public class PaginatedResponse<T> where T : class
         TotalItems = paginatedList.TotalItems;
         HasPreviousPage = paginatedList.HasPreviousPage;
         HasNextPage = paginatedList.HasNextPage;
-        Contends = paginatedList;
+        Contents = paginatedList;
     }
 
 }
