@@ -44,7 +44,7 @@ public class UserService : IUserService
         {
             result.Data = (await _userRepository.AddAsync(new Users
             {
-                FullName = userRegistrationDto.FullName,
+                FullName = userRegistrationDto.FullName != null ? userRegistrationDto.FullName : userRegistrationDto.Email,
                 Email = userRegistrationDto.Email,
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,
@@ -129,12 +129,13 @@ public class UserService : IUserService
         return user == null ? "Cant Not Find Email User In Data" : "Send Temporary Passwrod In Mail";
     }
 
-    public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO)
+    public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO, string? name)
     {
         PaginatedList<UserDTO> product = await _userRepository.FindPaginAsync<UserDTO>(
         getWithPaginationQueryDTO.PageNumber,
         getWithPaginationQueryDTO.PageSize,
-        expression: u => u.UsersRoles == null || !u.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN),
+        expression: u => ((name != null && u.FullName.Contains(name)) || name == null) &&
+                               (u.UsersRoles == null || !u.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
         orderBy: _ => _.OrderBy(u => u.FullName)
         );
         return await product.ToPaginatedResponseAsync();
@@ -204,5 +205,21 @@ public class UserService : IUserService
             result.Messages = user == null ? "Can Not Find User In Database" : "Can Not Find Package In Database";
         }
         return result;
+    }
+
+    public IEnumerable<UserDTO> SearchUserByName(string? name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return _userRepository.GetAll()
+                      .Where(_ => _.UsersRoles != null && !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN))
+                      .ProjectToType<UserDTO>()
+                      .ToList();
+        }
+        return _userRepository.GetAll()
+                      .Where(_ => _.FullName.Contains(name) &&
+                            (_.UsersRoles != null && !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)))
+                      .ProjectToType<UserDTO>()
+                      .ToList();
     }
 }

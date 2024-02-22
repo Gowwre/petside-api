@@ -12,8 +12,8 @@ public interface IUserService
     public Task<ResultResponse<UserDTO>> CreateUserAsync(UserRegistrationDto userRegistrationDto);
     public ResultResponse<UserDTO> GetUserAsync(Guid userId);
     public ResultResponse<UserDTO> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO);
-    public Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO);
+    public Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO, string? name);
     public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO);
     public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId, Guid membership);
-
+    public IEnumerable<UserDTO> SearchUserByName(string? name);
 }

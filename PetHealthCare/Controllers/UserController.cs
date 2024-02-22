@@ -68,8 +68,13 @@ public class UserController : ControllerBase
     //    return Ok(_userService.GetAllUser());
     //}
     [HttpGet("getAllInformation")]
-    public async Task<IActionResult> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query)
+    public async Task<IActionResult> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query, string? name)
     {
-        return Ok(await _userService.GetUsersPagin(query));
+        return Ok(await _userService.GetUsersPagin(query, name));
+    }
+    [HttpGet("search")]
+    public IActionResult SearchUserByName(string? name)
+    {
+        return Ok(_userService.SearchUserByName(name));
     }
 }
