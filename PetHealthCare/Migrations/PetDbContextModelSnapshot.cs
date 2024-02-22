@@ -67,7 +67,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.MemberUser", b =>
@@ -97,7 +97,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("MemberUsers");
+                    b.ToTable("MemberUsers", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Membership", b =>
@@ -128,7 +128,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Memberships");
+                    b.ToTable("Memberships", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.OfferAppointment", b =>
@@ -143,7 +143,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("OfferingsId");
 
-                    b.ToTable("OfferAppointments");
+                    b.ToTable("OfferAppointments", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Offerings", b =>
@@ -181,7 +181,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("ProvidersId");
 
-                    b.ToTable("Offerings");
+                    b.ToTable("Offerings", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Payment", b =>
@@ -235,7 +235,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Pets", b =>
@@ -333,7 +333,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Providers");
+                    b.ToTable("Providers", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Role", b =>
@@ -437,7 +437,7 @@ namespace PetHealthCare.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("UsersRoles");
+                    b.ToTable("UsersRoles", (string)null);
                 });
 
             modelBuilder.Entity("PetHealthCare.Model.Appointment", b =>
