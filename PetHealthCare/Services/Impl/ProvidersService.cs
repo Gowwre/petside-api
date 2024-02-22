@@ -35,9 +35,11 @@ public class ProvidersService : IProvidersService
         return result;
     }
 
-    public List<ProviderResponseDTO> GetAllProviders()
+    public List<ProviderResponseDTO> GetAllProviders(string? name)
     {
-        return _providersRepository.GetAll().ProjectToType<ProviderResponseDTO>().ToList();
+        return _providersRepository.GetAll().Where(_ =>
+            (name != null && _.ProviderName != null && _.ProviderName.Contains(name)) || name == null
+        ).ProjectToType<ProviderResponseDTO>().ToList();
     }
 
     public async Task<ResultResponse<ProviderResponseDTO>> GetProvidersAsync(Guid providersId)

@@ -30,9 +30,9 @@ public class ProvidersController : ControllerBase
     }
 
     [HttpGet("getAllInformation")]
-    public IActionResult GetAllUser()
+    public IActionResult GetAllUser(string? name)
     {
-        return Ok(_providersService.GetAllProviders());
+        return Ok(_providersService.GetAllProviders(name));
     }
 
     [HttpPost("CreateProvider")]

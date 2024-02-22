@@ -42,6 +42,18 @@ builder.Services.AddTransient<IProvidersRepository, ProvidersRepository>();
 builder.Services.AddTransient<IMembershipRepository, MembershipRepository>();
 builder.Services.AddTransient<IMemberUserRepository, MemberUserRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+//builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -59,7 +71,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
