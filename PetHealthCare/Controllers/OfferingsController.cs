@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetHealthCare.Model.DTO.Request;
+using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -18,25 +19,25 @@ public class OfferingsController : ControllerBase
     }
 
     [HttpPut("updateOffers/{id}")]
-    public async Task<IActionResult> UpdateOffersInfomation(Guid id, OfferRequestDTO offeringsDTO)
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> UpdateOffersInfomation(Guid id, OfferRequestDTO offeringsDTO)
     {
         return Ok(await _offeringsService.UpdateOfferingsAsync(id, offeringsDTO));
     }
 
     [HttpGet("getInformation/{id}")]
-    public async Task<IActionResult> GetInfomation(Guid id)
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> GetInformation(Guid id)
     {
         return Ok(await _offeringsService.GetOfferingsAsync(id));
     }
 
     [HttpGet("getAllInformation")]
-    public IActionResult GetAllUser()
+    public ActionResult<List<OfferResponseDTO>> GetAllUser()
     {
         return Ok(_offeringsService.GetAllOfferings());
     }
 
     [HttpPost("CreateInformation/{providerId}")]
-    public async Task<IActionResult> CreateOfferInformation(Guid providerId, OfferRequestDTO offeringsDTO)
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> CreateOfferInformation(Guid providerId, OfferRequestDTO offeringsDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _offeringsService.CreateOfferingsAsync(offeringsDTO, providerId));

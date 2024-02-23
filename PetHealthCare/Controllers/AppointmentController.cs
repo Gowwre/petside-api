@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetHealthCare.Model.DTO.Request;
+using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -18,26 +19,26 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpPost("createAppointment/{userId}")]
-    public async Task<IActionResult> UpdateAppointmentInfomation(Guid userId, AppointmentRequestDTO appointmentDTO,
+    public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> UpdateAppointmentInfomation(Guid userId, AppointmentRequestDTO appointmentDTO,
         [FromQuery] List<Guid> listGuidOffer)
     {
         return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer));
     }
 
     [HttpPut("updateAppointment/{id}")]
-    public async Task<IActionResult> UpdateAppointmentInfomation(Guid id, AppointmentRequestDTO appointmentDTO)
+    public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> UpdateAppointmentInfomation(Guid id, AppointmentRequestDTO appointmentDTO)
     {
         return Ok(await _appointmentService.UpdateAppointmentAsync(id, appointmentDTO));
     }
 
     [HttpGet("getInformation/{id}")]
-    public async Task<IActionResult> GetInfomationPet(Guid id)
+    public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> GetInfomationPet(Guid id)
     {
         return Ok(await _appointmentService.GetAppointmentAsync(id));
     }
 
     [HttpGet("getAllInformation")]
-    public IActionResult GetAllUser()
+    public ActionResult<List<AppointmentRequestDTO>> GetAllUser()
     {
         return Ok(_appointmentService.GetAllAppointment());
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -15,7 +16,7 @@ public class StatisticsController : ControllerBase
     }
 
     [HttpGet("year")]
-    public async Task<IActionResult> getStatistics(int year)
+    public async Task<ActionResult<Dictionary<int,StatisticsDTO>>> GetStatistics(int year)
     {
         return Ok(await _statisticsService.GetStatistics(year));
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -15,7 +16,7 @@ public class MembershipController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult getListMember()
+    public ActionResult<List<MembershipDTO>> getListMember()
     {
         return Ok(_membershipService.GetAllOfferings());
     }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
+using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -18,26 +20,26 @@ public class PetController : ControllerBase
     }
 
     [HttpPut("updatePet/{id}")]
-    public async Task<IActionResult> UpdatePetInfomation(Guid id, PetRequestDTO petRequestDTO)
+    public async Task<ActionResult<ResultResponse<PetResponseDTO>>> UpdatePetInformation(Guid id, PetRequestDTO petRequestDTO)
     {
         return Ok(await _petService.UpdatePetAsync(id, petRequestDTO));
     }
 
     [HttpGet("getPetInformation/{id}")]
-    public async Task<IActionResult> GetInfomationPet(Guid id)
+    public async Task<ActionResult<ResultResponse<PetResponseDTO>>> GetInformationPet(Guid id)
     {
         return Ok(await _petService.GetPetAsync(id));
     }
 
     [HttpPost("CreatePet/{OwnerId}")]
-    public async Task<IActionResult> CreatePetInformation(Guid OwnerId, [FromBody] PetRequestDTO petRequestDTO)
+    public async Task<ActionResult<ResultResponse<PetResponseDTO>>> CreatePetInformation(Guid OwnerId, [FromBody] PetRequestDTO petRequestDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _petService.CreatePetAsync(petRequestDTO, OwnerId));
     }
 
     [HttpGet("{search}")]
-    public async Task<IActionResult> GetAllUser([FromQuery] GetWithPaginationQueryDTO query, string? search)
+    public async Task<ActionResult<PaginatedResponse<PetsDTO>>> GetAllUser([FromQuery] GetWithPaginationQueryDTO query, string? search)
     {
         return Ok(await _petService.GetPetsPagin(query, search));
     }

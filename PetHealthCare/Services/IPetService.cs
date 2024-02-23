@@ -6,12 +6,12 @@ namespace PetHealthCare.Services;
 
 public interface IPetService
 {
-    public Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId);
-    public Task<ResultResponse<PetResponserDTO>> GetPetAsync(Guid petId);
+    public Task<ResultResponse<PetResponseDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId);
+    public Task<ResultResponse<PetResponseDTO>> GetPetAsync(Guid petId);
 
     public Task<PaginatedResponse<PetsDTO>> GetPetsPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
         string search);
 
-    public List<PetResponserDTO> GetAllPet();
-    public Task<ResultResponse<PetResponserDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO);
+    public List<PetResponseDTO> GetAllPet();
+    public Task<ResultResponse<PetResponseDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO);
 }

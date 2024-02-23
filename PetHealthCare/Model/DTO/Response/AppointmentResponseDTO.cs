@@ -13,5 +13,5 @@ public class AppointmentResponseDTO
     public decimal? AppointmentFee { get; set; }
     public AppointmentStatus? AppointmentStatus { get; set; }
 
-    [AdaptMember(nameof(Offerings))] public virtual ICollection<OfferResonseDTO>? OfferingsDto { get; set; }
+    [AdaptMember(nameof(Offerings))] public virtual ICollection<OfferResponseDTO>? OfferingsDto { get; set; }
 }

@@ -5,8 +5,8 @@ namespace PetHealthCare.Services;
 
 public interface IOfferingsService
 {
-    public Task<ResultResponse<OfferResonseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO, Guid providerId);
-    public Task<ResultResponse<OfferResonseDTO>> GetOfferingsAsync(Guid offeringsId);
-    public List<OfferResonseDTO> GetAllOfferings();
-    public Task<ResultResponse<OfferResonseDTO>> UpdateOfferingsAsync(Guid offeringsId, OfferRequestDTO offeringsDTO);
+    public Task<ResultResponse<OfferResponseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO, Guid providerId);
+    public Task<ResultResponse<OfferResponseDTO>> GetOfferingsAsync(Guid offeringsId);
+    public List<OfferResponseDTO> GetAllOfferings();
+    public Task<ResultResponse<OfferResponseDTO>> UpdateOfferingsAsync(Guid offeringsId, OfferRequestDTO offeringsDTO);
 }

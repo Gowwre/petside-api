@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetHealthCare.Model;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
+using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -43,7 +45,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register-member")]
-    public async Task<IActionResult> CreateUserAccount(UserRegistrationDto userRegistrationDto)
+    public async Task<ActionResult<ResultResponse<UserDTO>>> CreateUserAccount(UserRegistrationDto userRegistrationDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -51,13 +53,13 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("updateInformation/{id}")]
-    public IActionResult UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
+    public ActionResult<ResultResponse<UserDTO>> UpdateUserAccount(Guid id, UserUpdateDTO userUpdateDTO)
     {
         return Ok(_userService.UpdateUserAsync(id, userUpdateDTO));
     }
 
     [HttpGet("getInformation/{id}")]
-    public IActionResult GetInfomationUser(Guid id)
+    public ActionResult<ResultResponse<UserDTO>> GetInformationUser(Guid id)
     {
         return Ok(_userService.GetUserAsync(id));
     }
@@ -68,19 +70,19 @@ public class UserController : ControllerBase
     //    return Ok(_userService.GetAllUser());
     //}
     [HttpGet("getAllInformation")]
-    public async Task<IActionResult> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query, string? name)
+    public async Task<ActionResult<PaginatedResponse<UserDTO>>> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query, string? name)
     {
         return Ok(await _userService.GetUsersPagin(query, name));
     }
 
     [HttpGet("search")]
-    public IActionResult SearchUserByName(string? name)
+    public ActionResult<IEnumerable<UserDTO>> SearchUserByName(string? name)
     {
         return Ok(_userService.SearchUserByName(name));
     }
 
     [HttpGet("{id}/pets")]
-    public async Task<IActionResult> GetPetsByUserId([FromRoute] Guid id, [FromQuery] GetWithPaginationQueryDTO query,
+    public async Task<ActionResult<PaginatedResponse<PetsDTO>>> GetPetsByUserId([FromRoute] Guid id, [FromQuery] GetWithPaginationQueryDTO query,
         string? search)
     {
         return Ok(await _userService.GetPetsByUserId(query, id, search));

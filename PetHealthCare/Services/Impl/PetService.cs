@@ -21,9 +21,9 @@ public class PetService : IPetService
         _appointmentRepository = appointmentRepository;
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId)
+    public async Task<ResultResponse<PetResponseDTO>> CreatePetAsync(PetRequestDTO petRequestDTO, Guid userId)
     {
-        var result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponseDTO>();
         var ownerPet = _userRepository.GetAll().Where(u => u.Id == userId).FirstOrDefault();
         //var appointment = _appointmentRepository.GetById(AppointmentId);
         if (ownerPet == null)
@@ -40,7 +40,7 @@ public class PetService : IPetService
             petRequestDTO.Adapt(pet);
             pet.Users = ownerPet;
             //pet.Appointment = appointment;
-            result.Data = (await _petRepository.AddAsync(pet)).Adapt<PetResponserDTO>();
+            result.Data = (await _petRepository.AddAsync(pet)).Adapt<PetResponseDTO>();
             result.Code = 201;
             result.Success = true;
             result.Messages = "Create Pet Successfully";
@@ -55,14 +55,14 @@ public class PetService : IPetService
         return result;
     }
 
-    public List<PetResponserDTO> GetAllPet()
+    public List<PetResponseDTO> GetAllPet()
     {
-        return _petRepository.GetAll().ProjectToType<PetResponserDTO>().ToList();
+        return _petRepository.GetAll().ProjectToType<PetResponseDTO>().ToList();
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> GetPetAsync(Guid petId)
+    public async Task<ResultResponse<PetResponseDTO>> GetPetAsync(Guid petId)
     {
-        var result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponseDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -74,14 +74,14 @@ public class PetService : IPetService
 
         result.Code = 200;
         result.Success = true;
-        result.Data = pet.Adapt<PetResponserDTO>();
+        result.Data = pet.Adapt<PetResponseDTO>();
         result.Messages = "Get Pet Successfully";
         return result;
     }
 
-    public async Task<ResultResponse<PetResponserDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO)
+    public async Task<ResultResponse<PetResponseDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO)
     {
-        var result = new ResultResponse<PetResponserDTO>();
+        var result = new ResultResponse<PetResponseDTO>();
         var pet = _petRepository.GetById(petId);
         if (pet == null)
         {
@@ -95,7 +95,7 @@ public class PetService : IPetService
 
         result.Code = 200;
         result.Success = true;
-        result.Data = _petRepository.GetById(petId).Adapt<PetResponserDTO>();
+        result.Data = _petRepository.GetById(petId).Adapt<PetResponseDTO>();
         result.Messages = "Update Pet Successfully";
 
         return result;

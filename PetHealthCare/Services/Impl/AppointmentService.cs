@@ -43,10 +43,10 @@ public class AppointmentService : IAppointmentService
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
             var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
 
-            appointmentResponseObject.OfferingsDto = new List<OfferResonseDTO>();
+            appointmentResponseObject.OfferingsDto = new List<OfferResponseDTO>();
             appointmentDb.OfferAppointments?.ToList().ForEach(offer =>
             {
-                appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResonseDTO>());
+                appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResponseDTO>());
             });
 
             result.Data = appointmentResponseObject;
@@ -74,10 +74,10 @@ public class AppointmentService : IAppointmentService
         if (appointmentDb != null)
         {
             var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
-            appointmentResponseObject.OfferingsDto = new List<OfferResonseDTO>();
+            appointmentResponseObject.OfferingsDto = new List<OfferResponseDTO>();
             appointmentDb.OfferAppointments?.ToList().ForEach(offer =>
             {
-                appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResonseDTO>());
+                appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResponseDTO>());
             });
             result.Code = 200;
             result.Data = appointmentResponseObject;
@@ -110,10 +110,10 @@ public class AppointmentService : IAppointmentService
         appointmentDTO.AppointmentStatus = appointmentDb.AppointmentStatus; // giu nguyen status
         _appointmentRepository.Update(appointmentDTO.Adapt(appointmentDb));
         var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
-        appointmentResponseObject.OfferingsDto = new List<OfferResonseDTO>();
+        appointmentResponseObject.OfferingsDto = new List<OfferResponseDTO>();
         appointmentDb.OfferAppointments?.ToList().ForEach(offer =>
         {
-            appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResonseDTO>());
+            appointmentResponseObject.OfferingsDto?.Add(offer.Offerings.Adapt<OfferResponseDTO>());
         });
 
         result.Code = 200;

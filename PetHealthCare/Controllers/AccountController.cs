@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
+using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -16,13 +18,13 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("{email}/forgot_password")]
-    public async Task<IActionResult> ForGotPassword(string email)
+    public async Task<ActionResult<string>> ForGotPassword(string email)
     {
         return Ok(await _userService.ForgotPassword(email));
     }
 
     [HttpPost("changePassoword")]
-    public IActionResult ChangePassword(ChangePassowordDTO passowordDTO)
+    public ActionResult<ResultResponse<UserDTO>> ChangePassword(ChangePassowordDTO passowordDTO)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -30,7 +32,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("{userId}/pro-upgrade/{membership}")]
-    public IActionResult UpgradeAccount(Guid userId, Guid membership)
+    public ActionResult<ResultResponse<UserDTO>> UpgradeAccount(Guid userId, Guid membership)
     {
         return Ok(_userService.UpgradeAccountUser(userId, membership));
     }

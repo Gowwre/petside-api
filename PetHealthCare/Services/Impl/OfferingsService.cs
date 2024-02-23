@@ -17,10 +17,10 @@ public class OfferingsService : IOfferingsService
         _providersRepository = providersRepository;
     }
 
-    public async Task<ResultResponse<OfferResonseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO,
+    public async Task<ResultResponse<OfferResponseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO,
         Guid providerId)
     {
-        var result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResponseDTO>();
         try
         {
             var offer = offeringsDTO.Adapt<Offerings>();
@@ -28,7 +28,7 @@ public class OfferingsService : IOfferingsService
             if (provider != null)
             {
                 offer.Providers = provider;
-                var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResonseDTO>();
+                var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResponseDTO>();
                 resultOffer.ProviderResponse = provider.Adapt<ProviderResponseDTO>();
                 result.Data = resultOffer;
                 result.Success = true;
@@ -50,14 +50,14 @@ public class OfferingsService : IOfferingsService
         return result;
     }
 
-    public List<OfferResonseDTO> GetAllOfferings()
+    public List<OfferResponseDTO> GetAllOfferings()
     {
-        return _offeringsRepository.GetAll().ProjectToType<OfferResonseDTO>().ToList();
+        return _offeringsRepository.GetAll().ProjectToType<OfferResponseDTO>().ToList();
     }
 
-    public async Task<ResultResponse<OfferResonseDTO>> GetOfferingsAsync(Guid offeringsId)
+    public async Task<ResultResponse<OfferResponseDTO>> GetOfferingsAsync(Guid offeringsId)
     {
-        var result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResponseDTO>();
         var offer = _offeringsRepository.GetById(offeringsId);
         if (offer == null)
         {
@@ -68,7 +68,7 @@ public class OfferingsService : IOfferingsService
         else
         {
             result.Code = 200;
-            result.Data = offer.Adapt<OfferResonseDTO>();
+            result.Data = offer.Adapt<OfferResponseDTO>();
             result.Success = true;
             result.Messages = "FIND_OFFER_IN_DATABASE";
         }
@@ -76,10 +76,10 @@ public class OfferingsService : IOfferingsService
         return result;
     }
 
-    public async Task<ResultResponse<OfferResonseDTO>> UpdateOfferingsAsync(Guid offeringsId,
+    public async Task<ResultResponse<OfferResponseDTO>> UpdateOfferingsAsync(Guid offeringsId,
         OfferRequestDTO offeringsDTO)
     {
-        var result = new ResultResponse<OfferResonseDTO>();
+        var result = new ResultResponse<OfferResponseDTO>();
         var offer = _offeringsRepository.GetById(offeringsId);
         if (offer == null)
         {
@@ -96,7 +96,7 @@ public class OfferingsService : IOfferingsService
 
         result.Code = 200;
         result.Success = true;
-        result.Data = _offeringsRepository.GetById(offeringsId).Adapt<OfferResonseDTO>();
+        result.Data = _offeringsRepository.GetById(offeringsId).Adapt<OfferResponseDTO>();
         result.Messages = "UPDATE_OFFER_SUCCESSFULLY";
         return result;
     }

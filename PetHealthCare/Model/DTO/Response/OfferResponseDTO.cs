@@ -2,7 +2,7 @@
 
 namespace PetHealthCare.Model.DTO.Response;
 
-public class OfferResonseDTO
+public class OfferResponseDTO
 {
     [AdaptMember(nameof(Offerings.Id))] public Guid? OfferId { get; set; } = null;
 

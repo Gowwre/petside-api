@@ -3,7 +3,7 @@ using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Model.DTO.Response;
 
-public class PetResponserDTO
+public class PetResponseDTO
 {
     // [AdaptMember(nameof(Offerings.Id))]
     [AdaptMember(nameof(Pets.Id))] public Guid? PetId { get; set; }
