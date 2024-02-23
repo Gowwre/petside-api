@@ -41,5 +41,4 @@ public class PetController : ControllerBase
     {
         return Ok(await _petService.GetPetsPagin(query, search));
     }
-
 }

@@ -4,7 +4,6 @@ using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Repository;
-using PetHealthCare.Utils;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -101,15 +100,16 @@ public class PetService : IPetService
 
         return result;
     }
-    public async Task<PaginatedResponse<PetsDTO>> GetPetsPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO, string search)
+
+    public async Task<PaginatedResponse<PetsDTO>> GetPetsPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
+        string search)
     {
-        PaginatedList<PetsDTO> pets = await _petRepository.FindPaginAsync<PetsDTO>(
-        getWithPaginationQueryDTO.PageNumber,
-        getWithPaginationQueryDTO.PageSize,
-        expression: _ => _.Name != null && _.Name.Contains(search),
-        orderBy: _ => _.OrderBy(p => p.Name)
+        var pets = await _petRepository.FindPaginAsync<PetsDTO>(
+            getWithPaginationQueryDTO.PageNumber,
+            getWithPaginationQueryDTO.PageSize,
+            _ => _.Name != null && _.Name.Contains(search),
+            _ => _.OrderBy(p => p.Name)
         );
         return await pets.ToPaginatedResponseAsync();
     }
-
 }

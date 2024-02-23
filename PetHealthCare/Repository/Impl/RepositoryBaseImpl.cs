@@ -1,8 +1,8 @@
-﻿using Mapster;
+﻿using System.Linq.Expressions;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.AppDatabaseContext;
 using PetHealthCare.Utils;
-using System.Linq.Expressions;
 
 namespace PetHealthCare.Repository.Impl;
 
@@ -31,15 +31,9 @@ public class RepositoryBaseImpl<T> : IRepositoryBase<T> where T : class
     {
         IQueryable<T> query = _context.Set<T>();
 
-        if (expression != null)
-        {
-            query = query.Where(expression);
-        }
+        if (expression != null) query = query.Where(expression);
 
-        if (orderBy != null)
-        {
-            query = orderBy(query);
-        }
+        if (orderBy != null) query = orderBy(query);
 
         return await query.ProjectToType<TDTO>().PaginatedListAsync(pageIndex, pageSize, cancellationToken);
     }

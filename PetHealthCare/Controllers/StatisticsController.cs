@@ -2,6 +2,7 @@
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/statistics")]
 [ApiController]
 public class StatisticsController : ControllerBase

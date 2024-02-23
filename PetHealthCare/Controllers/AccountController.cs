@@ -3,6 +3,7 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/account")]
 [ApiController]
 public class AccountController : ControllerBase
@@ -19,6 +20,7 @@ public class AccountController : ControllerBase
     {
         return Ok(await _userService.ForgotPassword(email));
     }
+
     [HttpPost("changePassoword")]
     public IActionResult ChangePassword(ChangePassowordDTO passowordDTO)
     {
@@ -26,6 +28,7 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         return Ok(_userService.ChangePassword(passowordDTO));
     }
+
     [HttpPost("{userId}/pro-upgrade/{membership}")]
     public IActionResult UpgradeAccount(Guid userId, Guid membership)
     {

@@ -2,6 +2,7 @@
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
+
 [Route("api/membership")]
 [ApiController]
 public class MembershipController : ControllerBase
@@ -12,6 +13,7 @@ public class MembershipController : ControllerBase
     {
         _membershipService = membershipService;
     }
+
     [HttpGet]
     public IActionResult getListMember()
     {

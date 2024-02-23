@@ -47,20 +47,9 @@ public class PetDbContext : DbContext
             entity.Property(s => s.AppointmentStatus).HasConversion<string>();
             entity.Property(a => a.AppointmentFee).HasColumnType("decimal(18,2)");
         });
-        modelBuilder.Entity<Payment>(entity =>
-        {
-            entity.Property(s => s.Status).HasConversion<string>();
-
-        });
-        modelBuilder.Entity<Membership>(entity =>
-        {
-            entity.Property(s => s.Status).HasConversion<string>();
-
-        });
-        modelBuilder.Entity<Offerings>(entity =>
-        {
-            entity.Property(a => a.Price).HasColumnType("decimal(18,2)");
-        });
+        modelBuilder.Entity<Payment>(entity => { entity.Property(s => s.Status).HasConversion<string>(); });
+        modelBuilder.Entity<Membership>(entity => { entity.Property(s => s.Status).HasConversion<string>(); });
+        modelBuilder.Entity<Offerings>(entity => { entity.Property(a => a.Price).HasColumnType("decimal(18,2)"); });
 
         modelBuilder.Entity<OfferAppointment>(entity =>
         {
@@ -86,5 +75,4 @@ public class PetDbContext : DbContext
             .HasForeignKey(u => u.UsersId)
             .OnDelete(DeleteBehavior.NoAction);
     }
-
 }

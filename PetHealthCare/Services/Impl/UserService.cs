@@ -1,5 +1,4 @@
-﻿using System.Formats.Tar;
-using Mapster;
+﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.Model;
 using PetHealthCare.Model.DTO;
@@ -13,11 +12,11 @@ namespace PetHealthCare.Services.Impl;
 
 public class UserService : IUserService
 {
-    private readonly IRoleRepository _roleRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IEmailService _emailService;
     private readonly IMembershipRepository _membershipRepository;
     private readonly IPetRepository _petRepository;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserService(IRoleRepository roleRepository, IUserRepository userRepository, IEmailService emailService,
         IMembershipRepository membershipRepository, IPetRepository petRepository)
@@ -127,7 +126,7 @@ public class UserService : IUserService
         var user = _userRepository.GetAll()?.Where(_ => _.Email == email).FirstOrDefault();
         if (user != null)
         {
-            Guid password = Guid.NewGuid();
+            var password = Guid.NewGuid();
             PasswordHashUtils.CreatePasswordHash(password.ToString(), out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
@@ -142,13 +141,13 @@ public class UserService : IUserService
     public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
         string? name)
     {
-        PaginatedList<UserDTO> product = await _userRepository.FindPaginAsync<UserDTO>(
+        var product = await _userRepository.FindPaginAsync<UserDTO>(
             getWithPaginationQueryDTO.PageNumber,
             getWithPaginationQueryDTO.PageSize,
-            expression: u => ((name != null && u.FullName.Contains(name)) || name == null) &&
-                             (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
-                                 ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
-            orderBy: _ => _.OrderBy(u => u.FullName)
+            u => ((name != null && u.FullName.Contains(name)) || name == null) &&
+                 (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
+                     ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
+            _ => _.OrderBy(u => u.FullName)
         );
         return await product.ToPaginatedResponseAsync();
     }
@@ -190,8 +189,8 @@ public class UserService : IUserService
         {
             // thieu payment
 
-            DateTime nowDay = DateTime.Now;
-            user.MemberUsers?.Add(new()
+            var nowDay = DateTime.Now;
+            user.MemberUsers?.Add(new MemberUser
             {
                 Membership = memberPackage,
                 CreateDay = nowDay,
@@ -208,7 +207,7 @@ public class UserService : IUserService
             result.Code = 200;
             result.Data = _userRepository.GetById(user.Id).Adapt<UserDTO>();
             result.Success = true;
-            result.Messages = $"Upgrade Account User Success";
+            result.Messages = "Upgrade Account User Success";
         }
         else
         {
@@ -224,28 +223,27 @@ public class UserService : IUserService
     public IEnumerable<UserDTO> SearchUserByName(string? name)
     {
         if (string.IsNullOrEmpty(name))
-        {
             return _userRepository.GetAll()
                 .Where(_ => _.UsersRoles != null &&
                             !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN))
                 .ProjectToType<UserDTO>()
                 .ToList();
-        }
 
         return _userRepository.GetAll()
             .Where(_ => _.FullName.Contains(name) &&
-                        (_.UsersRoles != null &&
-                         !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)))
+                        _.UsersRoles != null &&
+                        !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN))
             .ProjectToType<UserDTO>()
             .ToList();
     }
 
     public async Task<PaginatedResponse<PetsDTO>> GetPetsByUserId(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
-        Guid id,string? search)
+        Guid id, string? search)
     {
         var result = await _petRepository.FindPaginAsync<PetsDTO>(getWithPaginationQueryDTO.PageNumber,
-            getWithPaginationQueryDTO.PageSize, expression: _ => _.UsersId == id || (_.UsersId == id && _.Name != null && _.Name.Contains(search)),
-            orderBy: _ => _.OrderBy(p => p.Name));
+            getWithPaginationQueryDTO.PageSize,
+            _ => _.UsersId == id || (_.UsersId == id && _.Name != null && _.Name.Contains(search)),
+            _ => _.OrderBy(p => p.Name));
 
         return await result.ToPaginatedResponseAsync();
     }

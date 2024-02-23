@@ -16,5 +16,4 @@ public class Payment : Common
     public virtual Appointment? Appointment { get; set; }
     public Guid? UsersId { get; set; }
     public virtual Users? Users { get; set; }
-
 }

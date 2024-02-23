@@ -4,14 +4,6 @@ namespace PetHealthCare.Model.DTO.Response;
 
 public class PaginatedResponse<T> where T : class
 {
-    public int Page { get; }
-    public int Size { get; }
-    public int TotalPages { get; }
-    public int TotalItems { get; }
-    public bool HasPreviousPage { get; }
-    public bool HasNextPage { get; }
-    public IList<T> Contents { get; }
-
     public PaginatedResponse(PaginatedList<T> paginatedList)
     {
         Page = paginatedList.PageIndex;
@@ -23,6 +15,13 @@ public class PaginatedResponse<T> where T : class
         Contents = paginatedList;
     }
 
+    public int Page { get; }
+    public int Size { get; }
+    public int TotalPages { get; }
+    public int TotalItems { get; }
+    public bool HasPreviousPage { get; }
+    public bool HasNextPage { get; }
+    public IList<T> Contents { get; }
 }
 
 public static class PaginatedResponseExtensions

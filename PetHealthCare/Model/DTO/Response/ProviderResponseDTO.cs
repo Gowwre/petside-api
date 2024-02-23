@@ -15,5 +15,4 @@ public class ProviderResponseDTO
     public string? Description { get; set; }
     public string? Location { get; set; }
     public virtual ICollection<ServicesDTO> Offerings { get; set; }
-
 }

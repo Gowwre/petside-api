@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.AppDatabaseContext;
 using PetHealthCare.Config;
@@ -6,7 +7,6 @@ using PetHealthCare.Repository;
 using PetHealthCare.Repository.Impl;
 using PetHealthCare.Services;
 using PetHealthCare.Services.Impl;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,8 +48,8 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
+                .AllowAnyMethod()
+                .AllowAnyHeader();
         });
 });
 //builder.Services.AddControllers();

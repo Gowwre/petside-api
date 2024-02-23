@@ -1,6 +1,6 @@
-﻿using PetHealthCare.Model.DTO.Request;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
+using PetHealthCare.Model.DTO.Request;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -18,9 +18,10 @@ public class EmailService : IEmailService
         message.To.Add(new MailAddress(request.To));
         await emailClient.SendMailAsync(message);
     }
+
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
-        SmtpClient client = new SmtpClient
+        var client = new SmtpClient
         {
             Port = 587,
             Host = "smtp.gmail.com",
@@ -35,7 +36,7 @@ public class EmailService : IEmailService
             From = new MailAddress("haoluonghuynh2001@gmail.com"),
             Subject = subject,
             Body = htmlMessage,
-            IsBodyHtml = true,
+            IsBodyHtml = true
         };
 
         mailMessage.To.Add(email);

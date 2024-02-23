@@ -11,6 +11,7 @@ public class MembershipRepository : RepositoryBaseImpl<Membership>, IMembershipR
     {
         _context = context;
     }
+
     public void AddAllMembership(List<Membership> memberships)
     {
         _context.Memberships.AddRange(memberships);

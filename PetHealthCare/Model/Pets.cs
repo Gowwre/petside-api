@@ -1,7 +1,7 @@
-﻿using PetHealthCare.Model.Abstract;
-using PetHealthCare.Model.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using PetHealthCare.Model.Abstract;
+using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Model;
 
@@ -17,8 +17,7 @@ public class Pets : Common
 
     [Column("UsersId")] public Guid UsersId { get; set; }
 
-    [JsonIgnore]
-    public virtual Users Users { get; set; }
+    [JsonIgnore] public virtual Users Users { get; set; }
 
     public Guid? AppointmentId { get; set; }
     public virtual Appointment? Appointment { get; set; }

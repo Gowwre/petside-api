@@ -8,5 +8,4 @@ public class MemberUserDTO
     public double? TotalAmount { get; set; }
     public Guid? MembershipId { get; set; }
     public virtual MembershipDTO? Membership { get; set; }
-
 }
