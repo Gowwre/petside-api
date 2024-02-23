@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using System.Formats.Tar;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using PetHealthCare.Model;
 using PetHealthCare.Model.DTO;
@@ -16,13 +17,16 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IEmailService _emailService;
     private readonly IMembershipRepository _membershipRepository;
+    private readonly IPetRepository _petRepository;
 
-    public UserService(IRoleRepository roleRepository, IUserRepository userRepository, IEmailService emailService, IMembershipRepository membershipRepository)
+    public UserService(IRoleRepository roleRepository, IUserRepository userRepository, IEmailService emailService,
+        IMembershipRepository membershipRepository, IPetRepository petRepository)
     {
         _roleRepository = roleRepository;
         _userRepository = userRepository;
         _emailService = emailService;
         _membershipRepository = membershipRepository;
+        _petRepository = petRepository;
     }
 
     public async Task<UserDTO> LoginAsync(LoginDTO loginDTO)
@@ -44,7 +48,9 @@ public class UserService : IUserService
         {
             result.Data = (await _userRepository.AddAsync(new Users
             {
-                FullName = userRegistrationDto.FullName != null ? userRegistrationDto.FullName : userRegistrationDto.Email,
+                FullName = userRegistrationDto.FullName != null
+                    ? userRegistrationDto.FullName
+                    : userRegistrationDto.Email,
                 Email = userRegistrationDto.Email,
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,
@@ -68,6 +74,7 @@ public class UserService : IUserService
 
         return result;
     }
+
     public ResultResponse<UserDTO> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO)
     {
         var result = new ResultResponse<UserDTO>();
@@ -111,6 +118,7 @@ public class UserService : IUserService
             result.Success = true;
             result.Messages = "Find User In Database";
         }
+
         return result;
     }
 
@@ -124,19 +132,23 @@ public class UserService : IUserService
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             _userRepository.Update(user);
-            await _emailService.SendEmailAsync(email, "Send Temporary Password", $"Your temporary password is <b>{password}</b>");
+            await _emailService.SendEmailAsync(email, "Send Temporary Password",
+                $"Your temporary password is <b>{password}</b>");
         }
+
         return user == null ? "Cant Not Find Email User In Data" : "Send Temporary Passwrod In Mail";
     }
 
-    public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO, string? name)
+    public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
+        string? name)
     {
         PaginatedList<UserDTO> product = await _userRepository.FindPaginAsync<UserDTO>(
-        getWithPaginationQueryDTO.PageNumber,
-        getWithPaginationQueryDTO.PageSize,
-        expression: u => ((name != null && u.FullName.Contains(name)) || name == null) &&
-                               (u.UsersRoles == null || !u.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
-        orderBy: _ => _.OrderBy(u => u.FullName)
+            getWithPaginationQueryDTO.PageNumber,
+            getWithPaginationQueryDTO.PageSize,
+            expression: u => ((name != null && u.FullName.Contains(name)) || name == null) &&
+                             (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
+                                 ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
+            orderBy: _ => _.OrderBy(u => u.FullName)
         );
         return await product.ToPaginatedResponseAsync();
     }
@@ -146,7 +158,8 @@ public class UserService : IUserService
         var result = new ResultResponse<UserDTO>();
         var user = _userRepository.GetAll()?.Where(_ => _.Email == passowordDTO.Email).FirstOrDefault();
 
-        if (user != null && PasswordHashUtils.VerifyPasswordHash(passowordDTO.Password, user.PasswordHash, user.PasswordSalt))
+        if (user != null &&
+            PasswordHashUtils.VerifyPasswordHash(passowordDTO.Password, user.PasswordHash, user.PasswordSalt))
         {
             PasswordHashUtils.CreatePasswordHash(passowordDTO.NewPassword, out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
@@ -156,7 +169,6 @@ public class UserService : IUserService
             result.Data = _userRepository.GetById(user.Id).Adapt<UserDTO>();
             result.Success = true;
             result.Messages = $"Find User Have Email {passowordDTO.Email}";
-
         }
         else
         {
@@ -165,6 +177,7 @@ public class UserService : IUserService
             result.Success = false;
             result.Messages = "Email Or Password Is Not Correct ";
         }
+
         return result;
     }
 
@@ -204,6 +217,7 @@ public class UserService : IUserService
             result.Success = false;
             result.Messages = user == null ? "Can Not Find User In Database" : "Can Not Find Package In Database";
         }
+
         return result;
     }
 
@@ -212,14 +226,27 @@ public class UserService : IUserService
         if (string.IsNullOrEmpty(name))
         {
             return _userRepository.GetAll()
-                      .Where(_ => _.UsersRoles != null && !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN))
-                      .ProjectToType<UserDTO>()
-                      .ToList();
+                .Where(_ => _.UsersRoles != null &&
+                            !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN))
+                .ProjectToType<UserDTO>()
+                .ToList();
         }
+
         return _userRepository.GetAll()
-                      .Where(_ => _.FullName.Contains(name) &&
-                            (_.UsersRoles != null && !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)))
-                      .ProjectToType<UserDTO>()
-                      .ToList();
+            .Where(_ => _.FullName.Contains(name) &&
+                        (_.UsersRoles != null &&
+                         !_.UsersRoles.Any(ur => ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)))
+            .ProjectToType<UserDTO>()
+            .ToList();
+    }
+
+    public async Task<PaginatedResponse<PetsDTO>> GetPetsByUserId(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
+        Guid id,string? search)
+    {
+        var result = await _petRepository.FindPaginAsync<PetsDTO>(getWithPaginationQueryDTO.PageNumber,
+            getWithPaginationQueryDTO.PageSize, expression: _ => _.UsersId == id || (_.UsersId == id && _.Name != null && _.Name.Contains(search)),
+            orderBy: _ => _.OrderBy(p => p.Name));
+
+        return await result.ToPaginatedResponseAsync();
     }
 }

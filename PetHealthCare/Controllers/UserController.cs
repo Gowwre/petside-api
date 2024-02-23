@@ -77,4 +77,10 @@ public class UserController : ControllerBase
     {
         return Ok(_userService.SearchUserByName(name));
     }
+
+    [HttpGet("{id}/pets")]
+    public async Task<IActionResult> GetPetsByUserId([FromRoute]Guid id, [FromQuery] GetWithPaginationQueryDTO query, string? search)
+    {
+        return Ok(await _userService.GetPetsByUserId(query,id,search));
+    }
 }

@@ -16,4 +16,7 @@ public interface IUserService
     public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO);
     public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId, Guid membership);
     public IEnumerable<UserDTO> SearchUserByName(string? name);
+
+    Task<PaginatedResponse<PetsDTO>> GetPetsByUserId(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
+        Guid id,string? search);
 }
