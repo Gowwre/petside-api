@@ -13,4 +13,5 @@ public interface IAppointmentService
 
     public Task<ResultResponse<AppointmentResponseDTO>> UpdateAppointmentAsync(Guid appointmentId,
         AppointmentRequestDTO appointmentDTO);
+    public bool DeleteAppointment(Guid appointmentId);
 }

@@ -21,6 +21,7 @@ public class PetDbContext : DbContext
 
     public DbSet<UsersRole> UsersRoles { get; set; }
     public DbSet<OfferAppointment> OfferAppointments { get; set; }
+    public DbSet<OfferProviders> OfferProviders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +56,10 @@ public class PetDbContext : DbContext
         {
             entity.HasKey(oa => new { oa.AppointmentId, oa.OfferingsId });
         });
+        modelBuilder.Entity<OfferProviders>(entity =>
+        {
+            entity.HasKey(op => new { op.OfferingsId, op.ProvidersId });
+        });
 
         modelBuilder.Entity<UsersRole>(entity => { entity.HasKey(ur => new { ur.RoleId, ur.UsersId }); });
 
@@ -68,11 +73,11 @@ public class PetDbContext : DbContext
             .HasMany(u => u.Pets)
             .WithOne(u => u.Users)
             .HasForeignKey(u => u.UsersId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.NoAction); // NoAction
         modelBuilder.Entity<Users>()
             .HasMany(u => u.Appointments)
             .WithOne(u => u.Users)
             .HasForeignKey(u => u.UsersId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.NoAction); // chua test 
     }
 }

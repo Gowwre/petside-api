@@ -87,4 +87,9 @@ public class UserController : ControllerBase
     {
         return Ok(await _userService.GetPetsByUserId(query, id, search));
     }
+    //[HttpDelete("user/{id}")]
+    //public ActionResult DeleteUser(Guid id)
+    //{
+    //    return Ok(_userService.DeleteUser(id));
+    //}
 }

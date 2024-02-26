@@ -112,4 +112,17 @@ public class PetService : IPetService
         );
         return await pets.ToPaginatedResponseAsync();
     }
+
+    public bool DeletePet(Guid petId)
+    {
+        try
+        {
+            _petRepository.Delete(petId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
 }

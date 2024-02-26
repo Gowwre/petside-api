@@ -14,4 +14,5 @@ public interface IPetService
 
     public List<PetResponseDTO> GetAllPet();
     public Task<ResultResponse<PetResponseDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO);
+    public bool DeletePet(Guid petId);
 }

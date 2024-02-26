@@ -42,4 +42,9 @@ public class AppointmentController : ControllerBase
     {
         return Ok(_appointmentService.GetAllAppointment());
     }
+    [HttpDelete("appointment/{id}")]
+    public ActionResult DeleteAppointment(Guid id)
+    {
+        return Ok(_appointmentService.DeleteAppointment(id));
+    }
 }

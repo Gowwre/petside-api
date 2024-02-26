@@ -12,5 +12,5 @@ public class Providers : Common
     public double? Rating { get; set; }
     public string? Description { get; set; }
     public string? Location { get; set; }
-    public virtual ICollection<Offerings>? Offerings { get; set; }
+    public virtual ICollection<OfferProviders>? OfferProviders { get; set; }
 }

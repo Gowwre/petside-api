@@ -19,9 +19,9 @@ public class OfferingsController : ControllerBase
     }
 
     [HttpPut("updateOffers/{id}")]
-    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> UpdateOffersInfomation(Guid id, OfferRequestDTO offeringsDTO)
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> UpdateOffersInfomation(Guid id, OfferRequestDTO offeringsDTO, [FromQuery] List<Guid> listProvider)
     {
-        return Ok(await _offeringsService.UpdateOfferingsAsync(id, offeringsDTO));
+        return Ok(await _offeringsService.UpdateOfferingsAsync(id, offeringsDTO, listProvider));
     }
 
     [HttpGet("getInformation/{id}")]
@@ -36,10 +36,15 @@ public class OfferingsController : ControllerBase
         return Ok(_offeringsService.GetAllOfferings());
     }
 
-    [HttpPost("CreateInformation/{providerId}")]
-    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> CreateOfferInformation(Guid providerId, OfferRequestDTO offeringsDTO)
+    [HttpPost("CreateInformation")]
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> CreateOfferInformation([FromQuery] List<Guid> listProvider, OfferRequestDTO offeringsDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return Ok(await _offeringsService.CreateOfferingsAsync(offeringsDTO, providerId));
+        return Ok(await _offeringsService.CreateOfferingsAsync(offeringsDTO, listProvider));
+    }
+    [HttpDelete("offering/{id}")]
+    public ActionResult DeleteOffering(Guid id)
+    {
+        return Ok(_offeringsService.DeleteOfferings(id));
     }
 }

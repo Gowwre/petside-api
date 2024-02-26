@@ -37,7 +37,7 @@ public class AppointmentService : IAppointmentService
             OfferId?.ForEach(x =>
             {
                 appointment.OfferAppointments?.Add(new OfferAppointment
-                    { Offerings = _offeringsRepository.GetById(x) });
+                { Offerings = _offeringsRepository.GetById(x) });
             });
 
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
@@ -60,6 +60,20 @@ public class AppointmentService : IAppointmentService
         }
 
         return result;
+    }
+
+    public bool DeleteAppointment(Guid appointmentId)
+    {
+        try
+        {
+            _appointmentRepository.Delete(appointmentId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+
     }
 
     public List<AppointmentRequestDTO> GetAllAppointment()

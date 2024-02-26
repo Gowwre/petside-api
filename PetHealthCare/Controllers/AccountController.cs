@@ -18,13 +18,13 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("{email}/forgot_password")]
-    public async Task<ActionResult<string>> ForGotPassword(string email)
+    public async Task<IActionResult> ForGotPassword(string email)
     {
         return Ok(await _userService.ForgotPassword(email));
     }
 
     [HttpPost("changePassoword")]
-    public ActionResult<ResultResponse<UserDTO>> ChangePassword(ChangePassowordDTO passowordDTO)
+    public IActionResult ChangePassword(ChangePassowordDTO passowordDTO)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -36,4 +36,10 @@ public class AccountController : ControllerBase
     {
         return Ok(_userService.UpgradeAccountUser(userId, membership));
     }
+    [HttpPost("{emai}/confirm/{OTP}")]
+    public IActionResult ConfirmOtpEmail(int OTP, string emai)
+    {
+        return Ok(_userService.ConfirmEmalOTP(OTP, emai));
+    }
+
 }

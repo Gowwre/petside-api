@@ -3,9 +3,8 @@ using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Model.DTO.Response;
 
-public class PetResponseDTO
+public class PetUserResponseDTO
 {
-    // [AdaptMember(nameof(Offerings.Id))] 
     [AdaptMember(nameof(Pets.Id))] public Guid? PetId { get; set; }
 
     public string? Name { get; set; }
@@ -14,5 +13,4 @@ public class PetResponseDTO
     public DateTime? BirthDate { get; set; }
     public PetStatus? Gender { get; set; }
     public double? Weight { get; set; }
-    public virtual UserDTO Users { get; set; }
 }

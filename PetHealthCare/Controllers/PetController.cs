@@ -43,4 +43,9 @@ public class PetController : ControllerBase
     {
         return Ok(await _petService.GetPetsPagin(query, search));
     }
+    [HttpDelete("pet/{id}")]
+    public ActionResult DeletePet(Guid id)
+    {
+        return Ok(_petService.DeletePet(id));
+    }
 }

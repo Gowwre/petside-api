@@ -10,5 +10,6 @@ public interface IProvidersService
     public List<ProviderResponseDTO> GetAllProviders(string? name);
 
     public Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,
-        ProviderRequestDTO providersDTO);
+        ProviderRequestDTO providersDTO, List<Guid> listOffering);
+    public bool DeleteProviders(Guid providersId);
 }

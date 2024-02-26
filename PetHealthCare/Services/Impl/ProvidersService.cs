@@ -9,10 +9,12 @@ namespace PetHealthCare.Services.Impl;
 public class ProvidersService : IProvidersService
 {
     private readonly IProvidersRepository _providersRepository;
+    private readonly IOfferingsRepository _offeringsRepository;
 
-    public ProvidersService(IProvidersRepository providersRepository)
+    public ProvidersService(IProvidersRepository providersRepository, IOfferingsRepository offeringsRepository)
     {
         _providersRepository = providersRepository;
+        _offeringsRepository = offeringsRepository;
     }
 
     public async Task<ResultResponse<ProviderResponseDTO>> CreateProvidersAsync(ProviderRequestDTO providersDTO)
@@ -28,11 +30,23 @@ public class ProvidersService : IProvidersService
         }
         catch (Exception ex)
         {
-            //result.Messages = "CREATE_PROVIDER_FAIL";
             result.Messages = ex.Message;
         }
 
         return result;
+    }
+
+    public bool DeleteProviders(Guid providersId)
+    {
+        try
+        {
+            _providersRepository.Delete(providersId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public List<ProviderResponseDTO> GetAllProviders(string? name)
@@ -64,7 +78,7 @@ public class ProvidersService : IProvidersService
     }
 
     public async Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,
-        ProviderRequestDTO providersDTO)
+        ProviderRequestDTO providersDTO, List<Guid> listOffering)
     {
         var result = new ResultResponse<ProviderResponseDTO>();
         var provider = _providersRepository.GetById(providersId);
@@ -76,7 +90,19 @@ public class ProvidersService : IProvidersService
             return result;
         }
 
-        //providersDTO.ProviderId = provider.Id;
+        listOffering.ForEach(_ =>
+        {
+            var offering = _offeringsRepository.GetById(_);
+            if (offering != null && provider.OfferProviders != null
+            && !provider.OfferProviders.Any(op => op.Offerings != null && op.Offerings.Id == offering.Id))
+            {
+                provider.OfferProviders.Add(new OfferProviders
+                {
+                    Offerings = offering
+                });
+            }
+        });
+
         _providersRepository.Update(providersDTO.Adapt(provider));
         result.Code = 200;
         result.Success = true;

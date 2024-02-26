@@ -18,29 +18,30 @@ public class OfferingsService : IOfferingsService
     }
 
     public async Task<ResultResponse<OfferResponseDTO>> CreateOfferingsAsync(OfferRequestDTO offeringsDTO,
-        Guid providerId)
+        List<Guid> listProvider)
     {
         var result = new ResultResponse<OfferResponseDTO>();
         try
         {
             var offer = offeringsDTO.Adapt<Offerings>();
-            var provider = _providersRepository.GetById(providerId); // getdatabase provider
-            if (provider != null)
+            var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResponseDTO>();
+            listProvider.ForEach(_ =>
             {
-                offer.Providers = provider;
-                var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResponseDTO>();
-                resultOffer.ProviderResponse = provider.Adapt<ProviderResponseDTO>();
-                result.Data = resultOffer;
-                result.Success = true;
-                result.Messages = "Create Offer Successfully";
-                result.Code = 201;
-            }
-            else
-            {
-                result.Success = false;
-                result.Code = 300;
-                result.Messages = "PROVIDER_NOT_FOUND";
-            }
+                var provider = _providersRepository.GetById(_);
+                if (provider != null && offer.OfferProviders != null
+                && !offer.OfferProviders.Any(op => op.Providers != null && op.Providers.Id == provider.Id))
+                {
+                    offer.OfferProviders.Add(new OfferProviders
+                    {
+                        Providers = provider
+                    });
+                }
+            });
+            result.Data = resultOffer;
+            result.Success = true;
+            result.Messages = "Create Offer Successfully";
+            result.Code = 201;
+
         }
         catch (Exception ex)
         {
@@ -48,6 +49,19 @@ public class OfferingsService : IOfferingsService
         }
 
         return result;
+    }
+
+    public bool DeleteOfferings(Guid offeringsId)
+    {
+        try
+        {
+            _offeringsRepository.Delete(offeringsId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public List<OfferResponseDTO> GetAllOfferings()
@@ -77,7 +91,7 @@ public class OfferingsService : IOfferingsService
     }
 
     public async Task<ResultResponse<OfferResponseDTO>> UpdateOfferingsAsync(Guid offeringsId,
-        OfferRequestDTO offeringsDTO)
+        OfferRequestDTO offeringsDTO, List<Guid> listProvider)
     {
         var result = new ResultResponse<OfferResponseDTO>();
         var offer = _offeringsRepository.GetById(offeringsId);
@@ -88,12 +102,23 @@ public class OfferingsService : IOfferingsService
             result.Messages = "OFFER_NOT_FOUND";
             return result;
         }
+        listProvider.ForEach(_ =>
+        {
+            var provider = _providersRepository.GetById(_);
+            if (provider != null && offer.OfferProviders != null
+            && !offer.OfferProviders.Any(op => op.Providers != null && op.Providers.Id == provider.Id))
+            {
+                offer.OfferProviders.Add(new OfferProviders
+                {
+                    Providers = provider
+                });
+            }
+        });
 
         offer.Description = offeringsDTO.Description;
         offer.ServiceName = offeringsDTO.ServiceName;
         offer.Price = offeringsDTO.Price;
         _offeringsRepository.Update(offer);
-
         result.Code = 200;
         result.Success = true;
         result.Data = _offeringsRepository.GetById(offeringsId).Adapt<OfferResponseDTO>();

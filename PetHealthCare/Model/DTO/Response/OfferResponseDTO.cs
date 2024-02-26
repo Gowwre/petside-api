@@ -10,5 +10,6 @@ public class OfferResponseDTO
     public string? Description { get; set; }
     public decimal Price { get; set; }
 
-    [AdaptMember(nameof(Providers))] public virtual ProviderResponseDTO? ProviderResponse { get; set; }
+    public ICollection<OfferProvidersDTO>? OfferProviders { get; set; }
+    //[AdaptMember(nameof(Providers))] public virtual ProviderResponseDTO? ProviderResponse { get; set; }
 }

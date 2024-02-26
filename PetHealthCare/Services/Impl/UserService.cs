@@ -126,15 +126,13 @@ public class UserService : IUserService
         var user = _userRepository.GetAll()?.Where(_ => _.Email == email).FirstOrDefault();
         if (user != null)
         {
-            var password = Guid.NewGuid();
-            PasswordHashUtils.CreatePasswordHash(password.ToString(), out var passwordHash, out var passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            Random random = new Random();
+            int randomNumber = random.Next(0, 9999);
+            string formattedNumber = randomNumber.ToString("D4");
+            await _emailService.SendEmailAsync(email, "Send Temporary Password", $"Your temporary password is <b>{formattedNumber}</b>");
+            user.OtpEmail = Convert.ToInt32(formattedNumber);
             _userRepository.Update(user);
-            await _emailService.SendEmailAsync(email, "Send Temporary Password",
-                $"Your temporary password is <b>{password}</b>");
         }
-
         return user == null ? "Cant Not Find Email User In Data" : "Send Temporary Passwrod In Mail";
     }
 
@@ -157,8 +155,7 @@ public class UserService : IUserService
         var result = new ResultResponse<UserDTO>();
         var user = _userRepository.GetAll()?.Where(_ => _.Email == passowordDTO.Email).FirstOrDefault();
 
-        if (user != null &&
-            PasswordHashUtils.VerifyPasswordHash(passowordDTO.Password, user.PasswordHash, user.PasswordSalt))
+        if (user != null)
         {
             PasswordHashUtils.CreatePasswordHash(passowordDTO.NewPassword, out var passwordHash, out var passwordSalt);
             user.PasswordHash = passwordHash;
@@ -168,6 +165,7 @@ public class UserService : IUserService
             result.Data = _userRepository.GetById(user.Id).Adapt<UserDTO>();
             result.Success = true;
             result.Messages = $"Find User Have Email {passowordDTO.Email}";
+
         }
         else
         {
@@ -176,7 +174,6 @@ public class UserService : IUserService
             result.Success = false;
             result.Messages = "Email Or Password Is Not Correct ";
         }
-
         return result;
     }
 
@@ -246,5 +243,38 @@ public class UserService : IUserService
             _ => _.OrderBy(p => p.Name));
 
         return await result.ToPaginatedResponseAsync();
+    }
+    public ResultResponse<UserDTO> ConfirmEmalOTP(int OTP, string emai)
+    {
+        var result = new ResultResponse<UserDTO>();
+        var user = _userRepository.GetAll().Where(_ => _.Email == emai && _.OtpEmail == OTP).FirstOrDefault();
+        if (user != null)
+        {
+            result.Code = 200;
+            result.Data = user.Adapt<UserDTO>();
+            result.Success = true;
+            result.Messages = $"OTP IS TRUE";
+        }
+        else
+        {
+            result.Code = 300;
+            result.Data = null;
+            result.Success = false;
+            result.Messages = $"OTP IS FALSE";
+        }
+        return result;
+    }
+
+    public bool DeleteUser(Guid userId)
+    {
+        try
+        {
+            _userRepository.Delete(userId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 }

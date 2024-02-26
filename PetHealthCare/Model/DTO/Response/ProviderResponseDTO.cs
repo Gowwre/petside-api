@@ -14,5 +14,5 @@ public class ProviderResponseDTO
     public double? Rating { get; set; }
     public string? Description { get; set; }
     public string? Location { get; set; }
-    public virtual ICollection<ServicesDTO> Offerings { get; set; }
+    public virtual ICollection<OfferProvidersDTO>? OfferProviders { get; set; }
 }

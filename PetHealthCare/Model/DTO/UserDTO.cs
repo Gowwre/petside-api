@@ -18,6 +18,7 @@ public class UserDTO
 
     public UserStatus Status { get; set; }
 
+    public virtual ICollection<PetUserResponseDTO>? Pets { get; set; }
     public string? PhoneNumber { get; set; } = null;
 
     public virtual ICollection<AppointmentResponseDTO>? Appointments { get; set; }

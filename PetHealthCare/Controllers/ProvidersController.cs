@@ -19,9 +19,9 @@ public class ProvidersController : ControllerBase
     }
 
     [HttpPut("updateProviders/{id}")]
-    public async Task<ActionResult<ResultResponse<ProviderResponseDTO>>> UpdateProviderInformation(Guid id, ProviderRequestDTO providersDTO)
+    public async Task<ActionResult<ResultResponse<ProviderResponseDTO>>> UpdateProviderInformation(Guid id, ProviderRequestDTO providersDTO, [FromQuery] List<Guid> listOffering)
     {
-        return Ok(await _providersService.UpdateProvidersAsync(id, providersDTO));
+        return Ok(await _providersService.UpdateProvidersAsync(id, providersDTO, listOffering));
     }
 
     [HttpGet("getInformation/{id}")]
@@ -41,5 +41,11 @@ public class ProvidersController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _providersService.CreateProvidersAsync(providersDTO));
+    }
+
+    [HttpDelete("provider/{id}")]
+    public ActionResult DeleteProvider(Guid id)
+    {
+        return Ok(_providersService.DeleteProviders(id));
     }
 }
