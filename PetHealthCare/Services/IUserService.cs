@@ -22,6 +22,6 @@ public interface IUserService
 
     Task<PaginatedResponse<PetsDTO>> GetPetsByUserId(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
         Guid id, string? search);
-    public ResultResponse<UserDTO> ConfirmEmalOTP(int OTP, string emai);
+    public ResultResponse<UserDTO> ConfirmEmailOTP(int OTP, string emai);
     public bool DeleteUser(Guid userId);
 }

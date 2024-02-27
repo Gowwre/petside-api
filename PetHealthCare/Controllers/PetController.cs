@@ -31,11 +31,11 @@ public class PetController : ControllerBase
         return Ok(await _petService.GetPetAsync(id));
     }
 
-    [HttpPost("CreatePet/{OwnerId}")]
-    public async Task<ActionResult<ResultResponse<PetResponseDTO>>> CreatePetInformation(Guid OwnerId, [FromBody] PetRequestDTO petRequestDTO)
+    [HttpPost("CreatePet/{ownerId}")]
+    public async Task<ActionResult<ResultResponse<PetResponseDTO>>> CreatePetInformation(Guid ownerId, [FromBody] PetRequestDTO petRequestDTO)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        return Ok(await _petService.CreatePetAsync(petRequestDTO, OwnerId));
+        return Ok(await _petService.CreatePetAsync(petRequestDTO, ownerId));
     }
 
     [HttpGet("{search}")]

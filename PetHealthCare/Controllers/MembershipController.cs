@@ -16,7 +16,7 @@ public class MembershipController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<MembershipDTO>> getListMember()
+    public ActionResult<List<MembershipDTO>> GetListMember()
     {
         return Ok(_membershipService.GetAllOfferings());
     }

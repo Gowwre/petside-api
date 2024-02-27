@@ -23,7 +23,7 @@ public class AccountController : ControllerBase
         return Ok(await _userService.ForgotPassword(email));
     }
 
-    [HttpPost("changePassoword")]
+    [HttpPost("changePassword")]
     public IActionResult ChangePassword(ChangePassowordDTO passowordDTO)
     {
         if (!ModelState.IsValid)
@@ -36,10 +36,10 @@ public class AccountController : ControllerBase
     {
         return Ok(_userService.UpgradeAccountUser(userId, membership));
     }
-    [HttpPost("{emai}/confirm/{OTP}")]
-    public IActionResult ConfirmOtpEmail(int OTP, string emai)
+    [HttpPost("{email}/confirm/{OTP}")]
+    public IActionResult ConfirmOtpEmail(int OTP, string email)
     {
-        return Ok(_userService.ConfirmEmalOTP(OTP, emai));
+        return Ok(_userService.ConfirmEmailOTP(OTP, email));
     }
 
 }

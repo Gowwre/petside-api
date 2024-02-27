@@ -244,7 +244,7 @@ public class UserService : IUserService
 
         return await result.ToPaginatedResponseAsync();
     }
-    public ResultResponse<UserDTO> ConfirmEmalOTP(int OTP, string emai)
+    public ResultResponse<UserDTO> ConfirmEmailOTP(int OTP, string emai)
     {
         var result = new ResultResponse<UserDTO>();
         var user = _userRepository.GetAll().Where(_ => _.Email == emai && _.OtpEmail == OTP).FirstOrDefault();

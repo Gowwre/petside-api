@@ -19,7 +19,7 @@ public class OfferingsController : ControllerBase
     }
 
     [HttpPut("updateOffers/{id}")]
-    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> UpdateOffersInfomation(Guid id, OfferRequestDTO offeringsDTO, [FromQuery] List<Guid> listProvider)
+    public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> UpdateOffersInformation(Guid id, OfferRequestDTO offeringsDTO, [FromQuery] List<Guid> listProvider)
     {
         return Ok(await _offeringsService.UpdateOfferingsAsync(id, offeringsDTO, listProvider));
     }
