@@ -7,6 +7,7 @@ public interface IProvidersService
 {
     public Task<ResultResponse<ProviderResponseDTO>> CreateProvidersAsync(ProviderRequestDTO providersDTO);
     public Task<ResultResponse<ProviderResponseDTO>> GetProvidersAsync(Guid providersId);
+    public List<ProviderResponseDTO> GetProvidersCategory(string? search);
     public List<ProviderResponseDTO> GetAllProviders(string? name);
 
     public Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,

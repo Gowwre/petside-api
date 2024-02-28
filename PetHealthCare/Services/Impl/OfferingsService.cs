@@ -24,7 +24,7 @@ public class OfferingsService : IOfferingsService
         try
         {
             var offer = offeringsDTO.Adapt<Offerings>();
-            var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResponseDTO>();
+            offer.OfferProviders = new List<OfferProviders>();
             listProvider.ForEach(_ =>
             {
                 var provider = _providersRepository.GetById(_);
@@ -37,6 +37,7 @@ public class OfferingsService : IOfferingsService
                     });
                 }
             });
+            var resultOffer = (await _offeringsRepository.AddAsync(offer)).Adapt<OfferResponseDTO>();
             result.Data = resultOffer;
             result.Success = true;
             result.Messages = "Create Offer Successfully";

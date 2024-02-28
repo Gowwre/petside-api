@@ -18,6 +18,7 @@ public class PetDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Membership> Memberships { get; set; }
     public DbSet<MemberUser> MemberUsers { get; set; }
+    public DbSet<Notifications> Notifications { get; set; }
 
     public DbSet<UsersRole> UsersRoles { get; set; }
     public DbSet<OfferAppointment> OfferAppointments { get; set; }

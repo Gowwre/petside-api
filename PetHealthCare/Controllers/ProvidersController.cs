@@ -29,6 +29,11 @@ public class ProvidersController : ControllerBase
     {
         return Ok(await _providersService.GetProvidersAsync(id));
     }
+    [HttpGet("searchCategory")]
+    public ActionResult<List<ProviderResponseDTO>> GetProviderByCategory(string? search)
+    {
+        return Ok(_providersService.GetProvidersCategory(search));
+    }
 
     [HttpGet("getAllInformation")]
     public ActionResult<List<ProviderResponseDTO>> GetAllUser(string? name)

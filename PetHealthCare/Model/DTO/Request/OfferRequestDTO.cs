@@ -6,7 +6,8 @@ public class OfferRequestDTO
     //public Guid? OfferId { get; set; } = null;
     public string ServiceName { get; set; }
     public string? Description { get; set; }
-
+    public string? Image { get; set; }
+    public string Category { get; set; }
     public decimal Price { get; set; }
     //[AdaptMember(nameof(Providers))]
     //public virtual ProvidersDTO? ProvidersDto { get; set; }

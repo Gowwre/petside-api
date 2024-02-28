@@ -77,6 +77,13 @@ public class ProvidersService : IProvidersService
         return result;
     }
 
+    public List<ProviderResponseDTO> GetProvidersCategory(string? serviceType)
+    {
+        return _providersRepository.GetAll().Where(_ =>
+             (serviceType != null && _.ServiceType != null && _.ServiceType.Contains(serviceType)) || serviceType == null
+         ).ProjectToType<ProviderResponseDTO>().ToList();
+    }
+
     public async Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,
         ProviderRequestDTO providersDTO, List<Guid> listOffering)
     {

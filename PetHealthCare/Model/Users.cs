@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PetHealthCare.Model.Abstract;
+using PetHealthCare.Model.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using PetHealthCare.Model.Abstract;
-using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Model;
 
@@ -33,4 +33,5 @@ public class Users : Common
     public virtual ICollection<Pets>? Pets { get; set; }
     public virtual ICollection<Payment>? Payments { get; set; }
     public virtual ICollection<Appointment>? Appointments { get; set; }
+    public virtual ICollection<Notifications>? Notifications { get; set; }
 }
