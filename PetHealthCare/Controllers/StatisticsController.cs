@@ -16,8 +16,18 @@ public class StatisticsController : ControllerBase
     }
 
     [HttpGet("year")]
-    public async Task<ActionResult<Dictionary<int,StatisticsDTO>>> GetStatistics(int year)
+    public async Task<ActionResult<Dictionary<int, StatisticsDTO>>> GetStatistics(int year)
     {
         return Ok(await _statisticsService.GetStatistics(year));
+    }
+    [HttpGet("statisticsUser")]
+    public async Task<IActionResult> getStatisticsUser()
+    {
+        return Ok(await _statisticsService.GetStaticsUser());
+    }
+    [HttpGet("statisticsProvider")]
+    public async Task<IActionResult> getStatisticsProvider()
+    {
+        return Ok(await _statisticsService.GetStaticsProvider());
     }
 }

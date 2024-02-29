@@ -4,6 +4,7 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Model.Enums;
 using PetHealthCare.Repository;
+using PetHealthCare.Repository.Impl;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -12,17 +13,21 @@ public class AppointmentService : IAppointmentService
     private readonly IAppointmentRepository _appointmentRepository;
     private readonly IOfferingsRepository _offeringsRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IProvidersRepository _providersRepository;
 
-    public AppointmentService(IAppointmentRepository appointmentRepository, IUserRepository userRepository,
-        IOfferingsRepository offeringsRepository)
+    public AppointmentService(IAppointmentRepository appointmentRepository,
+        IOfferingsRepository offeringsRepository,
+        IUserRepository userRepository,
+        IProvidersRepository providersRepository)
     {
         _appointmentRepository = appointmentRepository;
-        _userRepository = userRepository;
         _offeringsRepository = offeringsRepository;
+        _userRepository = userRepository;
+        _providersRepository = providersRepository;
     }
 
     public async Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(
-        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId)
+        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId, Guid providerId)
     {
         var result = new ResultResponse<AppointmentResponseDTO>();
         try
@@ -39,7 +44,7 @@ public class AppointmentService : IAppointmentService
                 appointment.OfferAppointments?.Add(new OfferAppointment
                 { Offerings = _offeringsRepository.GetById(x) });
             });
-
+            appointment.Providers = _providersRepository.GetById(providerId);
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
             var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
 

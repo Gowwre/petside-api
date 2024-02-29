@@ -16,4 +16,5 @@ public class AppointmentResponseDTO
     public AppointmentStatus? AppointmentStatus { get; set; }
 
     [AdaptMember(nameof(Offerings))] public virtual ICollection<OfferResponseDTO>? OfferingsDto { get; set; }
+    public virtual ProvidersOfferResponse? Providers { get; set; }
 }

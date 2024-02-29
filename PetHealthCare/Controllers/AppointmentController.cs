@@ -20,9 +20,9 @@ public class AppointmentController : ControllerBase
 
     [HttpPost("createAppointment/{userId}")]
     public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> UpdateAppointmentInformation(Guid userId, AppointmentRequestDTO appointmentDTO,
-        [FromQuery] List<Guid> listGuidOffer)
+        [FromQuery] List<Guid> listGuidOffer, Guid providerId)
     {
-        return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer));
+        return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer, providerId));
     }
 
     [HttpPut("updateAppointment/{id}")]

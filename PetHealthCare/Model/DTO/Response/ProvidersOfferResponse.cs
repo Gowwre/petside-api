@@ -1,17 +1,17 @@
-﻿using PetHealthCare.Model.Abstract;
+﻿using Mapster;
 
-namespace PetHealthCare.Model;
+namespace PetHealthCare.Model.DTO.Response;
 
-public class Providers : Common
+public class ProvidersOfferResponse
 {
+    [AdaptMember(nameof(Providers.Id))] public Guid? ProviderId { get; set; } = null;
+
     public string? ProviderName { get; set; }
     public string? ContactInformation { get; set; }
-    public string? ImageProvider { get; set; }
     public string? ServiceType { get; set; }
+    public string? ImageProvider { get; set; }
     public string? Availability { get; set; }
     public double? Rating { get; set; }
     public string? Description { get; set; }
     public string? Location { get; set; }
-    public virtual ICollection<OfferProviders>? OfferProviders { get; set; }
-    public virtual ICollection<Appointment>? Appointments { get; set; }
 }

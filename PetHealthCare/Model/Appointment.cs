@@ -21,4 +21,6 @@ public class Appointment : Common
 
     public virtual ICollection<Pets>? Pets { get; set; }
     public virtual ICollection<OfferAppointment>? OfferAppointments { get; set; }
+    public Guid ProvidersId { get; set; }
+    public virtual Providers? Providers { get; set; }
 }
