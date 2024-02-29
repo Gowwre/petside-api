@@ -455,3 +455,5 @@ build/
 ### VS Code ###
 .vscode/
 .rescache
+PetHealthCare/appsettings.Development.json
+PetHealthCare/appsettings.json
