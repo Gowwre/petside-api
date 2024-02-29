@@ -14,5 +14,7 @@ public class PetResponseDTO
     public DateTime? BirthDate { get; set; }
     public PetStatus? Gender { get; set; }
     public double? Weight { get; set; }
+    public double? Height { get; set; }
+    public string? IdentifyingFeatures { get; set; }
     public virtual UserDTO Users { get; set; }
 }

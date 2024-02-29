@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetHealthCare.AppDatabaseContext;
 
@@ -11,9 +12,11 @@ using PetHealthCare.AppDatabaseContext;
 namespace PetHealthCare.Migrations
 {
     [DbContext(typeof(PetDbContext))]
-    partial class PetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228101305_AddMorePetsAttributes")]
+    partial class AddMorePetsAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,9 +59,6 @@ namespace PetHealthCare.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProvidersId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
@@ -73,8 +73,6 @@ namespace PetHealthCare.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProvidersId");
 
                     b.HasIndex("UsersId");
 
@@ -536,19 +534,11 @@ namespace PetHealthCare.Migrations
 
             modelBuilder.Entity("PetHealthCare.Model.Appointment", b =>
                 {
-                    b.HasOne("PetHealthCare.Model.Providers", "Providers")
-                        .WithMany("Appointments")
-                        .HasForeignKey("ProvidersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PetHealthCare.Model.Users", "Users")
                         .WithMany("Appointments")
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Providers");
 
                     b.Navigation("Users");
                 });
@@ -701,8 +691,6 @@ namespace PetHealthCare.Migrations
 
             modelBuilder.Entity("PetHealthCare.Model.Providers", b =>
                 {
-                    b.Navigation("Appointments");
-
                     b.Navigation("OfferProviders");
                 });
 

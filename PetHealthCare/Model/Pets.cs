@@ -14,6 +14,8 @@ public class Pets : Common
     public DateTime? BirthDate { get; set; }
     public PetStatus? Gender { get; set; }
     public double? Weight { get; set; }
+    public double? Height { get; set; }
+    public string? IdentifyingFeatures { get; set; }
 
     [Column("UsersId")] public Guid UsersId { get; set; }
 
