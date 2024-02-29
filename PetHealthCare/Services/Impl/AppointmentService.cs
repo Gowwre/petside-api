@@ -81,6 +81,33 @@ public class AppointmentService : IAppointmentService
 
     }
 
+    public Task<List<AppointmentResponseDTO>> GetByUser(Guid userId)
+    {
+        try
+        {
+
+            var result = _appointmentRepository.GetByCriteria(x => x.Users.Id == userId);
+            return result;
+        }
+        catch (Exception e){
+            throw new Exception(e.Message);
+        }
+    }
+
+    public Task<List<AppointmentResponseDTO>> GetByProvider(Guid providerId)
+    {
+        try
+        {
+var result = _appointmentRepository.GetByCriteria(x => x.Providers.Id == providerId);
+            return result;
+
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
     public List<AppointmentRequestDTO> GetAllAppointment()
     {
         return _appointmentRepository.GetAll().ProjectToType<AppointmentRequestDTO>().ToList();

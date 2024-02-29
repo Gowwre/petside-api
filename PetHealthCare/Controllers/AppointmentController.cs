@@ -42,6 +42,20 @@ public class AppointmentController : ControllerBase
     {
         return Ok(_appointmentService.GetAllAppointment());
     }
+
+    [HttpGet("getByUser/{userId}")]
+    public async Task<ActionResult<List<AppointmentResponseDTO>>> GetByUser(Guid userId)
+    {
+        var data = await _appointmentService.GetByUser(userId); 
+        return Ok(data);
+    }
+
+    [HttpGet("getByProvider/{providerId}")]
+    public async Task<ActionResult<List<AppointmentResponseDTO>>> GetByProvider(Guid providerId)
+    {
+        var data = await _appointmentService.GetByProvider(providerId);
+        return Ok(data);
+    }
     [HttpDelete("appointment/{id}")]
     public ActionResult DeleteAppointment(Guid id)
     {
