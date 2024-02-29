@@ -38,7 +38,7 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet("getAllInformation")]
-    public ActionResult<List<AppointmentRequestDTO>> GetAllUser()
+    public ActionResult<List<AppointmentResponseDTO>> GetAllUser()
     {
         return Ok(_appointmentService.GetAllAppointment());
     }

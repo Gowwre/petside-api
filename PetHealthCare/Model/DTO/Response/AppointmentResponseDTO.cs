@@ -14,6 +14,7 @@ public class AppointmentResponseDTO
     public string? Address { get; set; }
     public decimal? AppointmentFee { get; set; }
     public AppointmentStatus? AppointmentStatus { get; set; }
+    public Guid UserId { get; set; }
 
     [AdaptMember(nameof(Offerings))] public virtual ICollection<OfferResponseDTO>? OfferingsDto { get; set; }
     public virtual ProvidersOfferResponse? Providers { get; set; }
