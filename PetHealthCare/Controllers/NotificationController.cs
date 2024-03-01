@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
-using static Azure.Core.HttpHeader;
 
 namespace PetHealthCare.Controllers;
 [Route("api/[controller]")]
@@ -40,5 +38,16 @@ public class NotificationController : ControllerBase
     public ActionResult<ResultResponse<NotificationDTO>> GetAllNotificationAtSevenDay(DateTime date)
     {
         return Ok(_notificationService.GetAllNotificationNext7Days(date));
+    }
+    [HttpGet("user/{UserId}")]
+    public ActionResult<ResultResponse<NotificationDTO>> GetNotificationByUserId(Guid UserId)
+    {
+        return Ok(_notificationService.GetAllNotificationByUser(UserId));
+    }
+
+    [HttpGet("pet/{PetId}")]
+    public ActionResult<ResultResponse<NotificationDTO>> GetNotificationByPetId(Guid PetId)
+    {
+        return Ok(_notificationService.GetAllNotificationByPet(PetId));
     }
 }

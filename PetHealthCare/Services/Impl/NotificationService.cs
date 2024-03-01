@@ -31,7 +31,7 @@ public class NotificationService : INotificationService
         {
             result.Code = 300;
             result.Success = false;
-            result.Messages = ownerPet != null ? "OWNER_NOT_FOUND" : "PET_NOT_FOUND";
+            result.Messages = ownerPet == null ? "OWNER_NOT_FOUND" : "PET_NOT_FOUND";
             return result;
         }
 
@@ -94,5 +94,23 @@ public class NotificationService : INotificationService
             .Where(notification => notification.DateRemind >= day && notification.DateRemind <= endDate)
             .ProjectToType<NotificationDTO>()
             .ToList();
+    }
+
+    public List<NotificationDTO> GetAllNotificationByUser(Guid userId)
+    {
+        return _notificationRepository
+                    .GetAll()
+                    .Where(_ => _.UsersId == userId)
+                    .ProjectToType<NotificationDTO>()
+                    .ToList();
+    }
+
+    public List<NotificationDTO> GetAllNotificationByPet(Guid petId)
+    {
+        return _notificationRepository
+                   .GetAll()
+                   .Where(_ => _.PetsId == petId)
+                   .ProjectToType<NotificationDTO>()
+                   .ToList();
     }
 }

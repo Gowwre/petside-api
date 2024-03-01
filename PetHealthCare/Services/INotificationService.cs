@@ -10,5 +10,7 @@ public interface INotificationService
     public List<NotificationDTO> GetAllNotificationAtDay(DateTime day);
     public List<NotificationDTO> GetAllNotificationNext7Days(DateTime day);
     public ResultResponse<NotificationDTO> GetNotificationById(Guid Id);
+    public List<NotificationDTO> GetAllNotificationByUser(Guid userId);
+    public List<NotificationDTO> GetAllNotificationByPet(Guid petId);
 
 }

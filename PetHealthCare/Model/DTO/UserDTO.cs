@@ -23,4 +23,5 @@ public class UserDTO
 
     public virtual ICollection<AppointmentResponseDTO>? Appointments { get; set; }
     public virtual ICollection<MemberUserDTO>? MemberUsers { get; set; }
+    public virtual ICollection<NotificatonResponse>? Notifications { get; set; }
 }
