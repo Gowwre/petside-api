@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using PetHealthCare.Model;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Model.Enums;
@@ -42,12 +43,13 @@ public class AppointmentService : IAppointmentService
             OfferId?.ForEach(x =>
             {
                 appointment.OfferAppointments?.Add(new OfferAppointment
-                { Offerings = _offeringsRepository.GetById(x) });
+                    { Offerings = _offeringsRepository.GetById(x) });
             });
             appointment.Providers = _providersRepository.GetById(providerId);
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
             var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
 
+            appointmentResponseObject.User = user.Adapt<UserDTO>();
             appointmentResponseObject.OfferingsDto = new List<OfferResponseDTO>();
             appointmentDb.OfferAppointments?.ToList().ForEach(offer =>
             {
@@ -78,18 +80,17 @@ public class AppointmentService : IAppointmentService
         {
             return false;
         }
-
     }
 
     public Task<List<AppointmentResponseDTO>> GetByUser(Guid userId)
     {
         try
         {
-
             var result = _appointmentRepository.GetByCriteria(x => x.Users.Id == userId);
             return result;
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             throw new Exception(e.Message);
         }
     }
@@ -98,9 +99,8 @@ public class AppointmentService : IAppointmentService
     {
         try
         {
-var result = _appointmentRepository.GetByCriteria(x => x.Providers.Id == providerId);
+            var result = _appointmentRepository.GetByCriteria(x => x.Providers.Id == providerId);
             return result;
-
         }
         catch (Exception e)
         {
