@@ -5,7 +5,6 @@ using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Model.Enums;
 using PetHealthCare.Repository;
-using PetHealthCare.Repository.Impl;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -28,17 +27,19 @@ public class AppointmentService : IAppointmentService
     }
 
     public async Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(
-        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId)
+        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId, Guid providerId)
     {
         var result = new ResultResponse<AppointmentResponseDTO>();
         try
         {
             var user = _userRepository.GetById(userId);
             var appointment = new Appointment();
+            var provider = _providersRepository.GetById(providerId);
 
             appointmentDTO.AppointmentStatus = AppointmentStatus.PENDING_CONFIRMATION.ToString();
             appointmentDTO.Adapt(appointment);
             appointment.Users = user;
+            appointment.Providers = provider;
             appointment.OfferAppointments = new List<OfferAppointment>();
             OfferId?.ForEach(x =>
             {
