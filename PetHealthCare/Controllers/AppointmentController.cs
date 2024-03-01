@@ -30,6 +30,12 @@ public class AppointmentController : ControllerBase
     {
         return Ok(await _appointmentService.UpdateAppointmentAsync(id, appointmentDTO));
     }
+    
+    [HttpPatch("completeAppointment/{id}")]
+    public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> CompleteAppointment(Guid id)
+    {
+        return Ok(_appointmentService.CompleteAppointment(id));
+    }
 
     [HttpGet("getInformation/{id}")]
     public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> GetInformationPet(Guid id)

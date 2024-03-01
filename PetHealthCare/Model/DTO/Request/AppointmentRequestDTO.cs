@@ -15,5 +15,5 @@ public class AppointmentRequestDTO
     public decimal? AppointmentFee { get; set; }
 
     //public int? DurationMinutes { get; set; }
-    [JsonIgnore] public AppointmentStatus? AppointmentStatus { get; set; }
+    [JsonIgnore] public string? AppointmentStatus { get; set; }
 }

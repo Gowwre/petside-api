@@ -36,7 +36,7 @@ public class AppointmentService : IAppointmentService
             var user = _userRepository.GetById(userId);
             var appointment = new Appointment();
 
-            appointmentDTO.AppointmentStatus = AppointmentStatus.PENDING_CONFIRMATION;
+            appointmentDTO.AppointmentStatus = AppointmentStatus.PENDING_CONFIRMATION.ToString();
             appointmentDTO.Adapt(appointment);
             appointment.Users = user;
             appointment.OfferAppointments = new List<OfferAppointment>();
@@ -67,6 +67,30 @@ public class AppointmentService : IAppointmentService
         }
 
         return result;
+    }
+
+    public Task<ResultResponse<AppointmentResponseDTO>> CompleteAppointment(Guid appointmentId)
+    {
+        var result = new ResultResponse<AppointmentResponseDTO>();
+        try
+        {
+            var toBeUpdated = _appointmentRepository.GetById(appointmentId);
+            toBeUpdated.AppointmentStatus = AppointmentStatus.COMPLETED;
+            _appointmentRepository.Update(toBeUpdated);
+
+            result.Data = toBeUpdated.Adapt<AppointmentResponseDTO>();
+            result.Success = true;
+            result.Messages = "Update Appointment Successfully";
+            result.Code = 200;
+
+            return Task.FromResult(result);
+        }
+        catch (Exception e)
+        {
+            result.Messages = e.Message;
+        }
+
+        return Task.FromResult(result);
     }
 
     public bool DeleteAppointment(Guid appointmentId)
@@ -153,7 +177,7 @@ public class AppointmentService : IAppointmentService
             return result;
         }
 
-        appointmentDTO.AppointmentStatus = appointmentDb.AppointmentStatus; // giu nguyen status
+        appointmentDTO.AppointmentStatus = appointmentDb.AppointmentStatus.ToString(); // giu nguyen status
         _appointmentRepository.Update(appointmentDTO.Adapt(appointmentDb));
         var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
         appointmentResponseObject.OfferingsDto = new List<OfferResponseDTO>();

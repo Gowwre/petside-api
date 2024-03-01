@@ -13,7 +13,7 @@ public class AppointmentResponseDTO
     public string? VisitType { get; set; }
     public string? Address { get; set; }
     public decimal? AppointmentFee { get; set; }
-    public AppointmentStatus? AppointmentStatus { get; set; }
+    public string? AppointmentStatus { get; set; }
     public UserDTO User  { get; set; }
 
     [AdaptMember(nameof(Offerings))] public virtual ICollection<OfferResponseDTO>? OfferingsDto { get; set; }

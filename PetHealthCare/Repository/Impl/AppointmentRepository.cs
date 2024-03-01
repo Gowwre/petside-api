@@ -33,7 +33,7 @@ public class AppointmentRepository : RepositoryBaseImpl<Appointment>, IAppointme
                 AppointmentId = x.Id,
                 User = x.Users.Adapt<UserDTO>(),
                 OfferingsDto = x.OfferAppointments.Select(y => y.Offerings.Adapt<OfferResponseDTO>()).ToList(),
-                AppointmentStatus = x.AppointmentStatus,
+                AppointmentStatus = x.AppointmentStatus.ToString(),
                 Address = x.Address,
                 Notes = x.Notes,
                 AppointmentFee = x.AppointmentFee,
