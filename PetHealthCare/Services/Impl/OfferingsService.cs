@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using PetHealthCare.Model;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
@@ -63,6 +64,33 @@ public class OfferingsService : IOfferingsService
         {
             return false;
         }
+    }
+
+    public Task<List<OfferResponseDTO>> GetByCriteria(OfferingsQueryDto query)
+    {
+        
+        if(!string.IsNullOrEmpty(query.Name) && !string.IsNullOrEmpty(query.Category))
+        {
+            var data = _offeringsRepository.GetByCriteria(x=> x.ServiceName.Contains(query.Name) && x.Category.Contains(query.Category));
+            return data;
+        }
+        
+        if (!string.IsNullOrEmpty(query.Name))
+        {
+            var data = _offeringsRepository.GetByCriteria(x=> x.ServiceName.Contains(query.Name));
+            return data;
+        }
+
+        if (!string.IsNullOrEmpty(query.Category))
+        {
+            var data = _offeringsRepository.GetByCriteria(x => x.Category.Contains(query.Category));
+            return data;
+        }
+        
+        
+
+        return Task.FromResult(GetAllOfferings());
+
     }
 
     public List<OfferResponseDTO> GetAllOfferings()

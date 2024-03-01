@@ -35,6 +35,13 @@ public class OfferingsController : ControllerBase
     {
         return Ok(_offeringsService.GetAllOfferings());
     }
+    
+    [HttpGet("getByCriteria")]
+    public async Task<ActionResult<List<OfferResponseDTO>> > GetByCriteria([FromQuery] OfferingsQueryDto query)
+    {
+        var data = await _offeringsService.GetByCriteria(query);
+        return Ok(data);
+    }
 
     [HttpPost("CreateInformation")]
     public async Task<ActionResult<ResultResponse<OfferResponseDTO>>> CreateOfferInformation([FromQuery] List<Guid> listProvider, OfferRequestDTO offeringsDTO)
