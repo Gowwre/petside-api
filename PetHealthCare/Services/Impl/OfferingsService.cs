@@ -119,6 +119,8 @@ public class OfferingsService : IOfferingsService
         offer.Description = offeringsDTO.Description;
         offer.ServiceName = offeringsDTO.ServiceName;
         offer.Price = offeringsDTO.Price;
+        offer.Image = offeringsDTO.Image;
+        offer.Category = offeringsDTO.Category;
         _offeringsRepository.Update(offer);
         result.Code = 200;
         result.Success = true;
