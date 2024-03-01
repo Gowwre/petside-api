@@ -20,9 +20,9 @@ public class AppointmentController : ControllerBase
 
     [HttpPost("createAppointment/{userId}")]
     public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> UpdateAppointmentInformation(Guid userId, AppointmentRequestDTO appointmentDTO,
-        [FromQuery] List<Guid> listGuidOffer, Guid providerId)
+        [FromQuery] List<Guid> listGuidOffer)
     {
-        return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer, providerId));
+        return Ok(await _appointmentService.CreateAppointmentAsync(appointmentDTO, userId, listGuidOffer));
     }
 
     [HttpPut("updateAppointment/{id}")]
@@ -30,7 +30,7 @@ public class AppointmentController : ControllerBase
     {
         return Ok(await _appointmentService.UpdateAppointmentAsync(id, appointmentDTO));
     }
-    
+
     [HttpPatch("completeAppointment/{id}")]
     public async Task<ActionResult<ResultResponse<AppointmentResponseDTO>>> CompleteAppointment(Guid id)
     {
@@ -52,7 +52,7 @@ public class AppointmentController : ControllerBase
     [HttpGet("getByUser/{userId}")]
     public async Task<ActionResult<List<AppointmentResponseDTO>>> GetByUser(Guid userId)
     {
-        var data = await _appointmentService.GetByUser(userId); 
+        var data = await _appointmentService.GetByUser(userId);
         return Ok(data);
     }
 

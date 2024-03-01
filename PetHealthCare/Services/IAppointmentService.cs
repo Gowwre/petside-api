@@ -6,7 +6,7 @@ namespace PetHealthCare.Services;
 public interface IAppointmentService
 {
     public Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(AppointmentRequestDTO appointmentDTO,
-        Guid userId, List<Guid> OfferId, Guid providerId);
+        Guid userId, List<Guid> OfferId);
 
     public Task<ResultResponse<AppointmentResponseDTO>> GetAppointmentAsync(Guid appointmentId);
     public List<AppointmentRequestDTO> GetAllAppointment();

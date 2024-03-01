@@ -107,7 +107,7 @@ public class PetService : IPetService
         var pets = await _petRepository.FindPaginAsync<PetsDTO>(
             getWithPaginationQueryDTO.PageNumber,
             getWithPaginationQueryDTO.PageSize,
-            _ => _.Name != null && _.Name.Contains(search),
+            _ => (_.Name != null && _.Name.Contains(search) || search == null),
             _ => _.OrderBy(p => p.Name)
         );
         return await pets.ToPaginatedResponseAsync();

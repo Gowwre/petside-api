@@ -38,7 +38,7 @@ public class PetController : ControllerBase
         return Ok(await _petService.CreatePetAsync(petRequestDTO, ownerId));
     }
 
-    [HttpGet("{search}")]
+    [HttpGet]
     public async Task<ActionResult<PaginatedResponse<PetsDTO>>> GetAllUser([FromQuery] GetWithPaginationQueryDTO query, string? search)
     {
         return Ok(await _petService.GetPetsPagin(query, search));

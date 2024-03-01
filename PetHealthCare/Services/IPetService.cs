@@ -10,7 +10,7 @@ public interface IPetService
     public Task<ResultResponse<PetResponseDTO>> GetPetAsync(Guid petId);
 
     public Task<PaginatedResponse<PetsDTO>> GetPetsPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
-        string search);
+         string search);
 
     public List<PetResponseDTO> GetAllPet();
     public Task<ResultResponse<PetResponseDTO>> UpdatePetAsync(Guid petId, PetRequestDTO petRequestDTO);

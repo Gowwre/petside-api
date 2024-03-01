@@ -28,7 +28,7 @@ public class AppointmentService : IAppointmentService
     }
 
     public async Task<ResultResponse<AppointmentResponseDTO>> CreateAppointmentAsync(
-        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId, Guid providerId)
+        AppointmentRequestDTO appointmentDTO, Guid userId, List<Guid> OfferId)
     {
         var result = new ResultResponse<AppointmentResponseDTO>();
         try
@@ -43,9 +43,9 @@ public class AppointmentService : IAppointmentService
             OfferId?.ForEach(x =>
             {
                 appointment.OfferAppointments?.Add(new OfferAppointment
-                    { Offerings = _offeringsRepository.GetById(x) });
+                { Offerings = _offeringsRepository.GetById(x) });
             });
-            appointment.Providers = _providersRepository.GetById(providerId);
+
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
             var appointmentResponseObject = appointmentDb.Adapt<AppointmentResponseDTO>();
 
