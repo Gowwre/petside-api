@@ -20,6 +20,9 @@ public class Users : Common
 
     public string? Address { get; set; }
 
+    public bool IsUpgrade { get; set; }
+    public DateTime UpgradeDate { get; set; }
+
     public UserStatus Status { get; set; }
 
     [JsonIgnore][Column("PasswordHash")] public byte[] PasswordHash { get; set; } = null!;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Services;
@@ -39,6 +40,12 @@ public class ProvidersController : ControllerBase
     public ActionResult<List<ProviderResponseDTO>> GetAllUser(string? name)
     {
         return Ok(_providersService.GetAllProviders(name));
+    }
+
+    [HttpPost("LoginProvider")]
+    public async Task<ActionResult<ResultResponse<ProviderResponseDTO>>> LoginProvider(LoginProviderDTO loginProviderDTO)
+    {
+        return Ok(await _providersService.loginProvidersAsync(loginProviderDTO));
     }
 
     [HttpPost("CreateProvider")]

@@ -1,8 +1,11 @@
 ﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using PetHealthCare.Model;
+using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
 using PetHealthCare.Repository;
+using PetHealthCare.Utils;
 
 namespace PetHealthCare.Services.Impl;
 
@@ -22,7 +25,12 @@ public class ProvidersService : IProvidersService
         var result = new ResultResponse<ProviderResponseDTO>();
         try
         {
-            var provider = await _providersRepository.AddAsync(providersDTO.Adapt<Providers>());
+            var providerAddDb = providersDTO.Adapt<Providers>();
+            providerAddDb.Username = providersDTO.UserNameLogin != null ? providersDTO.UserNameLogin : "ShopPet";
+            PasswordHashUtils.CreatePasswordHash(providersDTO.Password != null ? providersDTO.Password : "1", out var passwordHash, out var passwordSalt);
+            providerAddDb.PasswordHash = passwordHash;
+            providerAddDb.PasswordSalt = passwordSalt;
+            var provider = await _providersRepository.AddAsync(providerAddDb);
             result.Data = provider.Adapt<ProviderResponseDTO>();
             result.Success = true;
             result.Messages = "Create Providers Successfully";
@@ -82,6 +90,34 @@ public class ProvidersService : IProvidersService
         return _providersRepository.GetAll().Where(_ =>
              (serviceType != null && _.ServiceType != null && _.ServiceType.Contains(serviceType)) || serviceType == null
          ).ProjectToType<ProviderResponseDTO>().ToList();
+    }
+
+    public async Task<ResultResponse<ProviderResponseDTO>> loginProvidersAsync(LoginProviderDTO loginProviderDTO)
+    {
+        var result = new ResultResponse<ProviderResponseDTO>();
+        var provider = await _providersRepository.GetAll().Where(p => p.Username == loginProviderDTO.UserName).FirstOrDefaultAsync();
+        if (provider == null)
+        {
+            result.Code = 300;
+            result.Success = false;
+            result.Messages = "INCORRECT_USERNAME_OR_PASSWORD";
+        }
+        else
+        {
+            if (!PasswordHashUtils.VerifyPasswordHash(loginProviderDTO.Password, provider.PasswordHash, provider.PasswordSalt))
+            {
+                result.Code = 300;
+                result.Success = false;
+                result.Messages = "INCORRECT_USERNAME_OR_PASSWORD";
+                return result;
+            }
+            result.Code = 200;
+            result.Data = provider.Adapt<ProviderResponseDTO>();
+            result.Success = true;
+            result.Messages = "FIND_PROVIDER_IN_DATABASE";
+        }
+
+        return result;
     }
 
     public async Task<ResultResponse<ProviderResponseDTO>> UpdateProvidersAsync(Guid providersId,

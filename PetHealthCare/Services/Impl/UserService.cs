@@ -137,17 +137,33 @@ public class UserService : IUserService
     }
 
     public async Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
-        string? name)
+        string? name, bool CheckIsUpgrade)
     {
-        var product = await _userRepository.FindPaginAsync<UserDTO>(
-            getWithPaginationQueryDTO.PageNumber,
-            getWithPaginationQueryDTO.PageSize,
-            u => ((name != null && u.FullName.Contains(name)) || name == null) &&
-                 (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
-                     ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
-            _ => _.OrderBy(u => u.FullName)
-        );
-        return await product.ToPaginatedResponseAsync();
+        if (CheckIsUpgrade)
+        {
+            var product = await _userRepository.FindPaginAsync<UserDTO>(
+                        getWithPaginationQueryDTO.PageNumber,
+                        getWithPaginationQueryDTO.PageSize,
+                        u => ((name != null && u.FullName.Contains(name)) || name == null) &&
+                             (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
+                                 ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)) && u.IsUpgrade,
+                        _ => _.OrderByDescending(u => u.UpgradeDate)
+                    );
+            return await product.ToPaginatedResponseAsync();
+        }
+        else
+        {
+            var product = await _userRepository.FindPaginAsync<UserDTO>(
+                getWithPaginationQueryDTO.PageNumber,
+                getWithPaginationQueryDTO.PageSize,
+                u => ((name != null && u.FullName.Contains(name)) || name == null) &&
+                     (u.UsersRoles == null || !u.UsersRoles.Any(ur =>
+                         ur.Role != null && ur.Role.RoleName == RoleName.ADMIN)),
+                _ => _.OrderBy(u => u.FullName)
+            );
+            return await product.ToPaginatedResponseAsync();
+        }
+
     }
 
     public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO)
@@ -177,11 +193,11 @@ public class UserService : IUserService
         return result;
     }
 
-    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId, Guid membership)
+    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId)
     {
         var result = new ResultResponse<UserDTO>();
         var user = _userRepository.GetById(userId);
-        var memberPackage = _membershipRepository.GetById(membership);
+        var memberPackage = _membershipRepository.GetAll().Where(m => m.Status == MembershipStatus.PRO_THREE_MONTHS).FirstOrDefault();
         if (user != null && memberPackage != null)
         {
             // thieu payment
@@ -276,5 +292,18 @@ public class UserService : IUserService
         {
             return false;
         }
+    }
+
+    public string UserRegisterUpgrade(Guid userId)
+    {
+        var user = _userRepository.GetById(userId);
+        if (user == null)
+        {
+            return "User Is Not Found";
+        }
+        user.IsUpgrade = true;
+        user.UpgradeDate = DateTime.Now;
+        _userRepository.Update(user);
+        return "Rigister Upgrade Account To Pro Successfully";
     }
 }

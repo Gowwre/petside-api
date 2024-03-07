@@ -2,6 +2,8 @@
 
 public class ProviderRequestDTO
 {
+    public string? UserNameLogin { get; set; }
+    public string? Password { get; set; }
     public string? ProviderName { get; set; }
     public string? ContactInformation { get; set; }
     public string? ServiceType { get; set; }

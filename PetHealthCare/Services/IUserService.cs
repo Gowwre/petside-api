@@ -12,12 +12,12 @@ public interface IUserService
     public Task<ResultResponse<UserDTO>> CreateUserAsync(UserRegistrationDto userRegistrationDto);
     public ResultResponse<UserDTO> GetUserAsync(Guid userId);
     public ResultResponse<UserDTO> UpdateUserAsync(Guid userId, UserUpdateDTO userUpdateDTO);
-
     public Task<PaginatedResponse<UserDTO>> GetUsersPagin(GetWithPaginationQueryDTO getWithPaginationQueryDTO,
-        string? name);
+        string? name, bool CheckIsUpgrade);
 
     public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO);
-    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId, Guid membership);
+    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId);
+    public string UserRegisterUpgrade(Guid userId);
     public IEnumerable<UserDTO> SearchUserByName(string? name);
 
     Task<PaginatedResponse<PetsDTO>> GetPetsByUserId(GetWithPaginationQueryDTO getWithPaginationQueryDTO,

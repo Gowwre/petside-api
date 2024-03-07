@@ -30,12 +30,19 @@ public class AccountController : ControllerBase
             return BadRequest(ModelState);
         return Ok(_userService.ChangePassword(passowordDTO));
     }
-
-    [HttpPost("{userId}/pro-upgrade/{membership}")]
-    public ActionResult<ResultResponse<UserDTO>> UpgradeAccount(Guid userId, Guid membership)
+    // admin call vo day UserRegisterUpgrade
+    [HttpPost("{userId}/pro-upgrade")]
+    public ActionResult<ResultResponse<UserDTO>> UpgradeAccount(Guid userId)
     {
-        return Ok(_userService.UpgradeAccountUser(userId, membership));
+        return Ok(_userService.UpgradeAccountUser(userId));
     }
+    // user Call de dang ki tai khoang cho admin duyet
+    [HttpPost("{userId}/register-pro-upgrade")]
+    public ActionResult RegisterUpgradeAccount(Guid userId)
+    {
+        return Ok(_userService.UserRegisterUpgrade(userId));
+    }
+
     [HttpPost("{email}/confirm/{OTP}")]
     public IActionResult ConfirmOtpEmail(int OTP, string email)
     {

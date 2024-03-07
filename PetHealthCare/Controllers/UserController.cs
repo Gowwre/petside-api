@@ -70,9 +70,9 @@ public class UserController : ControllerBase
     //    return Ok(_userService.GetAllUser());
     //}
     [HttpGet("getAllInformation")]
-    public async Task<ActionResult<PaginatedResponse<UserDTO>>> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query, string? name)
+    public async Task<ActionResult<PaginatedResponse<UserDTO>>> GetAllUserWithPagin([FromQuery] GetWithPaginationQueryDTO query, string? name, bool CheckIsUpgrade)
     {
-        return Ok(await _userService.GetUsersPagin(query, name));
+        return Ok(await _userService.GetUsersPagin(query, name, CheckIsUpgrade));
     }
 
     [HttpGet("search")]
