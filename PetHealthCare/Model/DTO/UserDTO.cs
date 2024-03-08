@@ -13,6 +13,8 @@ public class UserDTO
     public string Email { get; set; }
 
     public string? DateOfBirth { get; set; }
+    public bool IsUpgrade { get; set; }
+    public DateTime UpgradeDate { get; set; }
 
     public string? Address { get; set; }
 

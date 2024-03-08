@@ -22,7 +22,7 @@ public class Users : Common
 
     public bool IsUpgrade { get; set; }
     public DateTime UpgradeDate { get; set; }
-
+    //public DateTime ExpiresDate { get; set; }
     public UserStatus Status { get; set; }
 
     [JsonIgnore][Column("PasswordHash")] public byte[] PasswordHash { get; set; } = null!;

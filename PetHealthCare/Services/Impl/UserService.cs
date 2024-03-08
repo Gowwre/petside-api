@@ -47,10 +47,16 @@ public class UserService : IUserService
         {
             result.Data = (await _userRepository.AddAsync(new Users
             {
+
                 FullName = userRegistrationDto.FullName != null
                     ? userRegistrationDto.FullName
                     : userRegistrationDto.Email,
                 Email = userRegistrationDto.Email,
+                Avatar = "https://firebasestorage.googleapis.com/v0/b/swd-longchim.appspot.com/o/images%2F143086968_2856368904622192_1959732218791162458_n.png?alt=media&token=009e2c55-5541-48bf-9442-c410dfb5738a",
+                DateOfBirth = "01/01/2000",
+                Address = "tp Hồ Chí Minh",
+                IsUpgrade = false,
+                UpgradeDate = DateTime.Now,
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
