@@ -32,9 +32,9 @@ public class AccountController : ControllerBase
     }
     // admin call vo day UserRegisterUpgrade
     [HttpPost("{userId}/pro-upgrade")]
-    public ActionResult<ResultResponse<UserDTO>> UpgradeAccount(Guid userId)
+    public async Task<ActionResult<ResultResponse<UserDTO>>> UpgradeAccount(Guid userId)
     {
-        return Ok(_userService.UpgradeAccountUser(userId));
+        return Ok(await _userService.UpgradeAccountUser(userId));
     }
     // user Call de dang ki tai khoang cho admin duyet
     [HttpPost("{userId}/register-pro-upgrade")]

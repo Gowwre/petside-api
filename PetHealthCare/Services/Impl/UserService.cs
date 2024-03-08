@@ -199,10 +199,35 @@ public class UserService : IUserService
         return result;
     }
 
-    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId)
+    public async Task<ResultResponse<UserDTO>> UpgradeAccountUser(Guid userId)
     {
         var result = new ResultResponse<UserDTO>();
         var user = _userRepository.GetById(userId);
+        user.Upgraded = true; // admin đã đồng ý xác nhận 
+        user.ExpirationDate = DateTime.Now.AddMonths(3);
+        user.IsUpgrade = false;
+        // sửa lại gói 3 tháng thành 109 
+        // Sending email
+        var emailSubject = "Congratulations on Your Account Upgrade";
+        var emailBody = @"<!DOCTYPE html>
+                    <html lang='en'>
+                    <head>
+                        <meta charset='UTF-8'>
+                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                        <title>Congratulations on Your Account Upgrade</title>
+                    </head>
+                    <body>
+                        <div style='font-family: Arial, sans-serif;'>
+                            <h2>Congratulations!</h2>
+                            <p>Your account has been upgraded to the Pro service package.</p>
+                            <p>The duration of this service package is 3 months, starting from today.</p>
+                            <p>Thank you for using our services.</p>
+                            <img src='https://support.content.office.net/en-us/media/7dbd87dd-c244-4d78-8fda-4408a08582cc.jpg' alt='Congratulations Image' style='max-width: 100%;'>
+                        </div>
+                    </body>
+                    </html>";
+
+        await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
         var memberPackage = _membershipRepository.GetAll().Where(m => m.Status == MembershipStatus.PRO_THREE_MONTHS).FirstOrDefault();
         if (user != null && memberPackage != null)
         {

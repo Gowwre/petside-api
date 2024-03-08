@@ -14,6 +14,7 @@ public class UserDTO
 
     public string? DateOfBirth { get; set; }
     public bool IsUpgrade { get; set; }
+    public bool Upgraded { get; set; }
     public DateTime UpgradeDate { get; set; }
 
     public string? Address { get; set; }

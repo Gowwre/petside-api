@@ -82,19 +82,19 @@ public class SeedData
                 {
                     Status = MembershipStatus.PRO_ONE_MONTH,
                     CreateDateTime = DateTime.Now,
-                    Amount = 100000
+                    Amount = 36000
                 },
                 new()
                 {
                     Status = MembershipStatus.PRO_THREE_MONTHS,
                     CreateDateTime = DateTime.Now,
-                    Amount = 280000
+                    Amount = 109000
                 },
                 new()
                 {
                     Status = MembershipStatus.PRO_SIX_MONTHS,
                     CreateDateTime = DateTime.Now,
-                    Amount = 550000
+                    Amount = 290000
                 }
             });
     }

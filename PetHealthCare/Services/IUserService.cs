@@ -16,7 +16,7 @@ public interface IUserService
         string? name, bool CheckIsUpgrade);
 
     public ResultResponse<UserDTO> ChangePassword(ChangePassowordDTO passowordDTO);
-    public ResultResponse<UserDTO> UpgradeAccountUser(Guid userId);
+    public Task<ResultResponse<UserDTO>> UpgradeAccountUser(Guid userId);
     public string UserRegisterUpgrade(Guid userId);
     public IEnumerable<UserDTO> SearchUserByName(string? name);
 

@@ -21,6 +21,8 @@ public class Users : Common
     public string? Address { get; set; }
 
     public bool IsUpgrade { get; set; }
+    public bool Upgraded { get; set; }
+    public DateTime ExpirationDate { get; set; }
     public DateTime UpgradeDate { get; set; }
     //public DateTime ExpiresDate { get; set; }
     public UserStatus Status { get; set; }
