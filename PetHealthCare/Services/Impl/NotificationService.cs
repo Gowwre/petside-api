@@ -58,9 +58,9 @@ public class NotificationService : INotificationService
 
     }
 
-    public List<NotificationDTO> GetAllNotificationAtDay(DateTime day)
+    public List<NotificationDTO> GetAllNotificationAtDay(DateTime day, Guid UserId)
     {
-        return _notificationRepository.GetAll().Where(_ => _.DateRemind.Day.Equals(day.Day) && _.DateRemind.Month.Equals(day.Month))
+        return _notificationRepository.GetAll().Where(_ => _.DateRemind.Day.Equals(day.Day) && _.DateRemind.Month.Equals(day.Month) && _.UsersId == UserId)
             .ProjectToType<NotificationDTO>().ToList();
     }
 
@@ -83,18 +83,26 @@ public class NotificationService : INotificationService
         }
         return result;
     }
-
-    public List<NotificationDTO> GetAllNotificationNext7Days(DateTime day)
+    public List<NotificationDTO> GetNotificationAroundDay(DateTime day, Guid UserId)
     {
-
-        DateTime endDate = day.AddDays(7);
+        DateTime startDate = day.AddDays(-3);
+        DateTime endDate = day.AddDays(3);
 
         return _notificationRepository
             .GetAll()
-            .Where(notification => notification.DateRemind >= day && notification.DateRemind <= endDate)
+            .Where(notification => notification.DateRemind >= startDate && notification.DateRemind <= endDate && notification.UsersId == UserId)
             .ProjectToType<NotificationDTO>()
             .ToList();
     }
+    //public List<NotificationDTO> GetAllNotificationNext7Days(DateTime day, Guid UserId)
+    //{
+    //    DateTime endDate = day.AddDays(7);
+    //    return _notificationRepository
+    //        .GetAll()
+    //        .Where(notification => notification.DateRemind >= day && notification.DateRemind <= endDate && notification.UsersId == UserId)
+    //        .ProjectToType<NotificationDTO>()
+    //        .ToList();
+    //}
 
     public List<NotificationDTO> GetAllNotificationByUser(Guid userId)
     {
