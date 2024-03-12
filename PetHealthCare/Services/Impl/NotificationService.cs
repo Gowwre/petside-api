@@ -94,6 +94,7 @@ public class NotificationService : INotificationService
             .ProjectToType<NotificationDTO>()
             .ToList();
     }
+
     //public List<NotificationDTO> GetAllNotificationNext7Days(DateTime day, Guid UserId)
     //{
     //    DateTime endDate = day.AddDays(7);

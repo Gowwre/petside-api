@@ -37,7 +37,7 @@ public class NotificationController : ControllerBase
     [HttpGet("getAllAtSevenDay/{date}")]
     public ActionResult<ResultResponse<NotificationDTO>> GetAllNotificationAtSevenDay(DateTime date, Guid UserId)
     {
-        return Ok(_notificationService.GetAllNotificationNext7Days(date, UserId));
+        return Ok(_notificationService.GetNotificationAroundDay(date, UserId));
     }
     [HttpGet("user/{UserId}")]
     public ActionResult<ResultResponse<NotificationDTO>> GetNotificationByUserId(Guid UserId)
