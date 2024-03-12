@@ -25,6 +25,11 @@ public class ProvidersService : IProvidersService
         var result = new ResultResponse<ProviderResponseDTO>();
         try
         {
+            if (_providersRepository.GetAll().Any(_ => _.Username == providersDTO.UserNameLogin))
+            {
+                throw new Exception("The Username For The Store Already Exists");
+            }
+
             var providerAddDb = providersDTO.Adapt<Providers>();
             providerAddDb.Username = providersDTO.UserNameLogin != null ? providersDTO.UserNameLogin : "ShopPet";
             PasswordHashUtils.CreatePasswordHash(providersDTO.Password != null ? providersDTO.Password : "1", out var passwordHash, out var passwordSalt);
