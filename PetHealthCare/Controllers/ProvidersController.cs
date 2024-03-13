@@ -54,6 +54,12 @@ public class ProvidersController : ControllerBase
         if (!ModelState.IsValid) return BadRequest(ModelState);
         return Ok(await _providersService.CreateProvidersAsync(providersDTO));
     }
+    [HttpPost("RegisterUserNamePasswordProvider")]
+    public async Task<ActionResult<ResultResponse<ProviderResponseDTO>>> CreateUserNamePasswordProvider(Guid providerId, string Username, string Password)
+    {
+
+        return Ok(await _providersService.CreateUserNamePasswordProvider(providerId, Username, Password));
+    }
 
     [HttpDelete("provider/{id}")]
     public ActionResult DeleteProvider(Guid id)

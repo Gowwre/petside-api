@@ -49,6 +49,21 @@ public class ProvidersService : IProvidersService
         return result;
     }
 
+    public async Task<string> CreateUserNamePasswordProvider(Guid ProviderId, string UserName, string Password)
+    {
+        var provider = await _providersRepository.GetAll().Where(_ => _.Id == ProviderId).FirstOrDefaultAsync();
+        if (provider == null)
+        {
+            return "Provider Is Not Found";
+        }
+        PasswordHashUtils.CreatePasswordHash(Password, out var passwordHash, out var passwordSalt);
+        provider.Username = UserName;
+        provider.PasswordHash = passwordHash;
+        provider.PasswordSalt = passwordSalt;
+        _providersRepository.Update(provider);
+        return "Update Provider Successfully";
+    }
+
     public bool DeleteProviders(Guid providersId)
     {
         try
