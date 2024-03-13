@@ -58,9 +58,9 @@ public class NotificationService : INotificationService
 
     }
 
-    public List<NotificationDTO> GetAllNotificationAtDay(DateTime day, Guid UserId)
+    public List<NotificationDTO> GetAllNotificationAtDay(DateTime day, Guid? UserId, Guid? PetId)
     {
-        return _notificationRepository.GetAll().Where(_ => _.DateRemind.Day.Equals(day.Day) && _.DateRemind.Month.Equals(day.Month) && _.UsersId == UserId)
+        return _notificationRepository.GetAll().Where(_ => _.DateRemind.Day.Equals(day.Day) && _.DateRemind.Month.Equals(day.Month) && (_.UsersId == UserId || UserId == null) && (_.PetsId == PetId || PetId == null))
             .ProjectToType<NotificationDTO>().ToList();
     }
 
@@ -83,14 +83,14 @@ public class NotificationService : INotificationService
         }
         return result;
     }
-    public List<NotificationDTO> GetNotificationAroundDay(DateTime day, Guid UserId)
+    public List<NotificationDTO> GetNotificationAroundDay(DateTime day, Guid? UserId, Guid? PetId)
     {
         DateTime startDate = day.AddDays(-3);
         DateTime endDate = day.AddDays(3);
 
         return _notificationRepository
             .GetAll()
-            .Where(notification => notification.DateRemind >= startDate && notification.DateRemind <= endDate && notification.UsersId == UserId)
+            .Where(notification => notification.DateRemind >= startDate && notification.DateRemind <= endDate && (notification.UsersId == UserId || UserId == null) && (notification.PetsId == PetId || PetId == null))
             .ProjectToType<NotificationDTO>()
             .ToList();
     }
