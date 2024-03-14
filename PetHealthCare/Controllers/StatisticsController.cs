@@ -30,4 +30,17 @@ public class StatisticsController : ControllerBase
     {
         return Ok(await _statisticsService.GetStaticsProvider());
     }
+    [HttpGet("totalMoney")]
+    public IActionResult getAllMoney()
+    {
+        return Ok(new
+        {
+            TotalMoney = _statisticsService.GetStaticsMoney()
+        });
+    }
+    [HttpGet("totalUser/{number}")]
+    public IActionResult GetLatestProUpgrade(int number)
+    {
+        return Ok(_statisticsService.GetProUpgradeLatest(number));
+    }
 }

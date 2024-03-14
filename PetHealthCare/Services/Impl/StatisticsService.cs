@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using PetHealthCare.Model;
 using PetHealthCare.Model.DTO;
 using PetHealthCare.Model.DTO.Response;
@@ -29,9 +30,17 @@ public class StatisticsService : IStatisticsService
         }
     }
 
-    public Task<double> GetStaticsMoney()
+    public double GetStaticsMoney()
     {
-        throw new NotImplementedException();
+        var TotalMoney = 0.0;
+        var members = _memberRepository.GetAll().Where(_ => _.TotalAmount != null).ToList();
+
+        foreach (var member in members)
+        {
+            TotalMoney += (double)(member.TotalAmount ?? 0.0);
+        }
+        // chỉ lấy được total gói Pro nhưng chưa lấy được tiền Appointments
+        return TotalMoney;
     }
 
     public async Task<ProviderStaticResponse> GetStaticsProvider()
@@ -72,5 +81,24 @@ public class StatisticsService : IStatisticsService
         }
 
         return _listStatistics;
+    }
+
+    public IEnumerable<UserDTO> GetProUpgradeLatest(int number)
+    {
+        var userMember = _memberRepository.GetAll()
+                .Where(_ => _.UsersId != null)
+                .OrderByDescending(p => p.CreateDay)
+                .GroupBy(p => p.UsersId)
+                .Select(g => g.FirstOrDefault())
+                .ToList();
+        var listUser = new List<UserDTO>();
+        userMember.ForEach(p =>
+        {
+            listUser.Add(_userRepository.GetAll()
+                .Where(_ => _.Id == p.UsersId || p.UsersId == null)
+                .FirstOrDefault().Adapt<UserDTO>());
+        });
+        var users = listUser.Take(number).ToList();
+        return users;
     }
 }

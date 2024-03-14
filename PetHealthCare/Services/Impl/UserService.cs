@@ -17,12 +17,14 @@ public class UserService : IUserService
     private readonly IPetRepository _petRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IMemberUserRepository _memberRepository;
 
-    public UserService(IRoleRepository roleRepository, IUserRepository userRepository, IEmailService emailService,
+    public UserService(IRoleRepository roleRepository, IMemberUserRepository memberRepository, IUserRepository userRepository, IEmailService emailService,
         IMembershipRepository membershipRepository, IPetRepository petRepository)
     {
         _roleRepository = roleRepository;
         _userRepository = userRepository;
+        _memberRepository = memberRepository;
         _emailService = emailService;
         _membershipRepository = membershipRepository;
         _petRepository = petRepository;
@@ -325,16 +327,38 @@ public class UserService : IUserService
         }
     }
 
-    public string UserRegisterUpgrade(Guid userId)
+    public async Task<string> UserRegisterUpgrade(Guid userId)
     {
+        // thiếu giửi mail cho admin 
         var user = _userRepository.GetById(userId);
         if (user == null)
         {
             return "User Is Not Found";
         }
+        var emailSubject = "Congratulations on Your Account Upgrade";
+        var emailBody = @"<!DOCTYPE html>
+             <html lang='en'>
+             <head>
+                 <meta charset='UTF-8'>
+                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                 <title>Congratulations on Your Account Upgrade</title>
+             </head>
+             <body>
+                 <div style='font-family: Arial, sans-serif;'>
+                     <h2>Congratulations!</h2>
+                     <p>Your account has been upgraded to the Pro service package.</p>
+                     <p>The duration of this service package is 3 months, starting from today.</p>
+                     <p>Thank you for using our services.</p>
+                     <img src='https://timo.vn/wp-content/uploads/tiny-people-with-laptop-financial-digital-transformation-open-banking-platform-online-banking-system-finance-digital-transformation-concept-illustration_335657-2529.jpg' alt='Congratulations Image' style='max-width: 100%;'>
+                 </div>
+             </body>
+             </html>";
+
+        await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
         user.IsUpgrade = true;
         user.UpgradeDate = DateTime.Now;
         _userRepository.Update(user);
         return "Rigister Upgrade Account To Pro Successfully";
     }
+
 }

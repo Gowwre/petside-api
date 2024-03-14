@@ -8,5 +8,6 @@ public interface IStatisticsService
     public Task<Dictionary<int, StatisticsDTO>> GetStatistics(int year);
     public Task<UserStaticsResponse> GetStaticsUser();
     public Task<ProviderStaticResponse> GetStaticsProvider();
-    public Task<double> GetStaticsMoney();
+    public double GetStaticsMoney();
+    public IEnumerable<UserDTO> GetProUpgradeLatest(int number);
 }
