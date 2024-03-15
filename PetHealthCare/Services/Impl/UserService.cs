@@ -43,7 +43,7 @@ public class UserService : IUserService
     {
         var result = new ResultResponse<UserDTO>();
         var roleOwner = _roleRepository.GetAll().Where(x => x.RoleName == RoleName.OWNER).FirstOrDefault();
-        var memberShip = _membershipRepository.GetAll().Where(m => m.Status == MembershipStatus.BASIC).FirstOrDefault();
+        //var memberShip = _membershipRepository.GetAll().Where(m => m.Status == MembershipStatus.BASIC).FirstOrDefault();
         PasswordHashUtils.CreatePasswordHash(userRegistrationDto.Password, out var passwordHash, out var passwordSalt);
         try
         {
@@ -58,12 +58,12 @@ public class UserService : IUserService
                 DateOfBirth = "01/01/2000",
                 Address = "tp Hồ Chí Minh",
                 IsUpgrade = false,
-                UpgradeDate = DateTime.Now,
+                //UpgradeDate = DateTime.Now,
                 Status = UserStatus.INACTIVE,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userRegistrationDto.PhoneNumber,
-                MemberUsers = new List<MemberUser> { new() { Membership = memberShip } },
+                //MemberUsers = new List<MemberUser> { new() { Membership = memberShip } },
                 UsersRoles = new List<UsersRole> { new() { Role = roleOwner } }
             })).Adapt<UserDTO>();
             result.Success = true;
