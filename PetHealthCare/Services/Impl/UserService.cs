@@ -234,7 +234,7 @@ public class UserService : IUserService
         if (user != null && memberPackage != null)
         {
             // thieu payment
-
+            user.UpgradeDate = DateTime.Now;
             var nowDay = DateTime.Now;
             user.MemberUsers?.Add(new MemberUser
             {
@@ -356,7 +356,7 @@ public class UserService : IUserService
 
         await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
         user.IsUpgrade = true;
-        user.UpgradeDate = DateTime.Now;
+
         _userRepository.Update(user);
         return "Rigister Upgrade Account To Pro Successfully";
     }

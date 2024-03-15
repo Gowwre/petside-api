@@ -38,9 +38,9 @@ public class AccountController : ControllerBase
     }
     // user Call de dang ki tai khoang cho admin duyet
     [HttpPost("{userId}/register-pro-upgrade")]
-    public ActionResult RegisterUpgradeAccount(Guid userId)
+    public async Task<ActionResult> RegisterUpgradeAccount(Guid userId)
     {
-        return Ok(_userService.UserRegisterUpgrade(userId));
+        return Ok(await _userService.UserRegisterUpgrade(userId));
     }
 
     [HttpPost("{email}/confirm/{OTP}")]
