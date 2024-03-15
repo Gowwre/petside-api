@@ -85,20 +85,25 @@ public class StatisticsService : IStatisticsService
 
     public IEnumerable<UserDTO> GetProUpgradeLatest(int number)
     {
-        var userMember = _memberRepository.GetAll()
-                .Where(_ => _.UsersId != null)
-                .OrderByDescending(p => p.CreateDay)
-                .GroupBy(p => p.UsersId)
-                .Select(g => g.FirstOrDefault())
-                .ToList();
-        var listUser = new List<UserDTO>();
-        userMember.ForEach(p =>
-        {
-            listUser.Add(_userRepository.GetAll()
-                .Where(_ => _.Id == p.UsersId || p.UsersId == null)
-                .FirstOrDefault().Adapt<UserDTO>());
-        });
-        var users = listUser.Take(number).ToList();
+        //var userMember = _memberRepository.GetAll()
+        //        .Where(_ => _.UsersId != null)
+        //        .OrderByDescending(p => p.CreateDay)
+        //        .GroupBy(p => p.UsersId)
+        //        .Select(g => g.FirstOrDefault())
+        //        .ToList();
+        //var listUser = new List<UserDTO>();
+        //userMember.ForEach(p =>
+        //{
+        //    listUser.Add(_userRepository.GetAll()
+        //        .Where(_ => _.Id == p.UsersId || p.UsersId == null)
+        //        .FirstOrDefault().Adapt<UserDTO>());
+        //});  
+        //var users = listUser.Take(number).ToList();
+        var users = _userRepository.GetAll()
+            .OrderByDescending(u => u.UpgradeDate)
+            .Take(number)
+            .ProjectToType<UserDTO>()
+            .ToList();
         return users;
     }
 }
