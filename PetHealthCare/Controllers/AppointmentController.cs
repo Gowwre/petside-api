@@ -59,9 +59,9 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet("getByProvider/{providerId}")]
-    public async Task<ActionResult<List<AppointmentResponseDTO>>> GetByProvider(Guid providerId)
+    public async Task<ActionResult<List<AppointmentResponseDTO>>> GetByProvider([FromRoute]Guid providerId,[FromQuery] string? status)
     {
-        var data = await _appointmentService.GetByProvider(providerId);
+        var data = await _appointmentService.GetByProvider(providerId,status);
         return Ok(data);
     }
     [HttpDelete("appointment/{id}")]

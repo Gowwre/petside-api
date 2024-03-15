@@ -120,11 +120,22 @@ public class AppointmentService : IAppointmentService
         }
     }
 
-    public Task<List<AppointmentResponseDTO>> GetByProvider(Guid providerId)
+    public Task<List<AppointmentResponseDTO>> GetByProvider(Guid providerId, string? status)
     {
         try
         {
-            var result = _appointmentRepository.GetByCriteria(x => x.Providers.Id == providerId);
+            Task<List<AppointmentResponseDTO>> result;
+            if (status == null)
+            {
+                result = _appointmentRepository.GetByCriteria(x => x.Providers.Id == providerId);
+            }
+            else
+            {
+                result = _appointmentRepository.GetByCriteria(x =>
+                    x.Providers.Id == providerId && x.AppointmentStatus ==
+                    (AppointmentStatus)Enum.Parse(typeof(AppointmentStatus), status));
+            }
+
             return result;
         }
         catch (Exception e)
@@ -136,7 +147,8 @@ public class AppointmentService : IAppointmentService
     public List<AppointmentResponseDTO> GetAllAppointment(string? status)
     {
         return status != null
-            ? _appointmentRepository.GetAll().Where(x=>(AppointmentStatus) Enum.Parse(typeof(AppointmentStatus), status) == x.AppointmentStatus)
+            ? _appointmentRepository.GetAll().Where(x =>
+                    (AppointmentStatus)Enum.Parse(typeof(AppointmentStatus), status) == x.AppointmentStatus)
                 .ProjectToType<AppointmentResponseDTO>().ToList()
             : _appointmentRepository.GetAll().ProjectToType<AppointmentResponseDTO>().ToList();
     }

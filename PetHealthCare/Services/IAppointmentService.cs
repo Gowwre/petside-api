@@ -16,6 +16,6 @@ public interface IAppointmentService
         AppointmentRequestDTO appointmentDTO);
     public bool DeleteAppointment(Guid appointmentId);
     Task<List<AppointmentResponseDTO>> GetByUser(Guid userId);
-    Task<List<AppointmentResponseDTO>> GetByProvider(Guid providerId);
+    Task<List<AppointmentResponseDTO>> GetByProvider(Guid providerId, string? status);
     Task<ResultResponse<AppointmentResponseDTO>> CompleteAppointment(Guid appointmentId);
 }
