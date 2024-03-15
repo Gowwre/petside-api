@@ -44,7 +44,7 @@ public class AppointmentService : IAppointmentService
             OfferId?.ForEach(x =>
             {
                 appointment.OfferAppointments?.Add(new OfferAppointment
-                { Offerings = _offeringsRepository.GetById(x) });
+                    { Offerings = _offeringsRepository.GetById(x) });
             });
 
             var appointmentDb = await _appointmentRepository.AddAsync(appointment);
@@ -133,9 +133,12 @@ public class AppointmentService : IAppointmentService
         }
     }
 
-    public List<AppointmentRequestDTO> GetAllAppointment()
+    public List<AppointmentResponseDTO> GetAllAppointment(string? status)
     {
-        return _appointmentRepository.GetAll().ProjectToType<AppointmentRequestDTO>().ToList();
+        return status != null
+            ? _appointmentRepository.GetAll().Where(x=>(AppointmentStatus) Enum.Parse(typeof(AppointmentStatus), status) == x.AppointmentStatus)
+                .ProjectToType<AppointmentResponseDTO>().ToList()
+            : _appointmentRepository.GetAll().ProjectToType<AppointmentResponseDTO>().ToList();
     }
 
     public async Task<ResultResponse<AppointmentResponseDTO>> GetAppointmentAsync(Guid appointmentId)

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetHealthCare.Model;
 using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
+using PetHealthCare.Model.Enums;
 using PetHealthCare.Services;
 
 namespace PetHealthCare.Controllers;
@@ -44,9 +46,9 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpGet("getAllInformation")]
-    public ActionResult<List<AppointmentResponseDTO>> GetAllUser()
+    public ActionResult<List<AppointmentResponseDTO>> GetAllUser([FromQuery()] string? status)
     {
-        return Ok(_appointmentService.GetAllAppointment());
+        return Ok(_appointmentService.GetAllAppointment(status));
     }
 
     [HttpGet("getByUser/{userId}")]

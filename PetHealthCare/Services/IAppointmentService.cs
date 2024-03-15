@@ -1,5 +1,6 @@
 ﻿using PetHealthCare.Model.DTO.Request;
 using PetHealthCare.Model.DTO.Response;
+using PetHealthCare.Model.Enums;
 
 namespace PetHealthCare.Services;
 
@@ -9,7 +10,7 @@ public interface IAppointmentService
         Guid userId, List<Guid> OfferId, Guid providerId);
 
     public Task<ResultResponse<AppointmentResponseDTO>> GetAppointmentAsync(Guid appointmentId);
-    public List<AppointmentRequestDTO> GetAllAppointment();
+    public List<AppointmentResponseDTO> GetAllAppointment(string? status);
 
     public Task<ResultResponse<AppointmentResponseDTO>> UpdateAppointmentAsync(Guid appointmentId,
         AppointmentRequestDTO appointmentDTO);
