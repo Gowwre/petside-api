@@ -335,20 +335,21 @@ public class UserService : IUserService
         {
             return "User Is Not Found";
         }
-        var emailSubject = "Congratulations on Your Account Upgrade";
+        var emailSubject = "Your Account Upgrade Request is Under Review";
         var emailBody = @"<!DOCTYPE html>
              <html lang='en'>
              <head>
                  <meta charset='UTF-8'>
                  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                 <title>Congratulations on Your Account Upgrade</title>
+                 <title>Your Account Upgrade Request is Under Review</title>
              </head>
              <body>
                  <div style='font-family: Arial, sans-serif;'>
-                     <h2>Congratulations!</h2>
-                     <p>Your account has been upgraded to the Pro service package.</p>
-                     <p>The duration of this service package is 3 months, starting from today.</p>
-                     <p>Thank you for using our services.</p>
+                     <h2>Notification: Your Account Upgrade Request is Under Review</h2>
+                     <p>Wellcome To Petside</p>
+                     <p>This is to inform you that your request to upgrade your account is currently under review by our admin team.</p>
+                     <p>Please allow 1-2 days for us to process your request. We appreciate your patience.</p>
+                     <p>Thank you for choosing our services.</p>
                      <img src='https://timo.vn/wp-content/uploads/tiny-people-with-laptop-financial-digital-transformation-open-banking-platform-online-banking-system-finance-digital-transformation-concept-illustration_335657-2529.jpg' alt='Congratulations Image' style='max-width: 100%;'>
                  </div>
              </body>
@@ -385,7 +386,7 @@ public class UserService : IUserService
                      <p>Upon reviewing your account preferences, it seems there might have been a misunderstanding or a change in your requirements. As such, we have reverted your account back to its previous subscription status.</p>
                      <p>If you have any questions or concerns regarding this change, please do not hesitate to reach out to our customer support team. We are here to assist you in any way we can.</p>
                      <p>Thank you for considering our Pro service package, and we apologize for any inconvenience this may have caused. We value your continued support and look forward to serving you in the future.</p>
-                     <img src='https://timo.vn/wp-content/uploads/tiny-people-with-laptop-financial-digital-transformation-open-banking-platform-online-banking-system-finance-digital-transformation-concept-illustration_335657-2529.jpg' alt='Cancellation Image' style='max-width: 100%;'>
+                     <img src='https://olivetech.com/wp-content/uploads/2022/07/blog-digi-trans-fin.png' alt='Cancellation Image' style='max-width: 100%;'>
                  </div>
              </body>
              </html>";
