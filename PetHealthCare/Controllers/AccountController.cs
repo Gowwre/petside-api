@@ -43,6 +43,12 @@ public class AccountController : ControllerBase
         return Ok(await _userService.UserRegisterUpgrade(userId));
     }
 
+    [HttpPost("{userId}/remove-pro-upgrade")]
+    public async Task<ActionResult> RemoveUpgradeAccount(Guid userId)
+    {
+        return Ok(await _userService.RemoveRegisterUpgrade(userId));
+    }
+
     [HttpPost("{email}/confirm/{OTP}")]
     public IActionResult ConfirmOtpEmail(int OTP, string email)
     {

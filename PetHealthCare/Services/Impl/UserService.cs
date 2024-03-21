@@ -361,4 +361,39 @@ public class UserService : IUserService
         return "Rigister Upgrade Account To Pro Successfully";
     }
 
+    public async Task<string> RemoveRegisterUpgrade(Guid userId)
+    {
+        var user = _userRepository.GetById(userId);
+        if (user == null)
+        {
+            return "User Is Not Found";
+        }
+        var emailSubject = "Cancellation of Pro Account Upgrade";
+
+        var emailBody = @"<!DOCTYPE html>
+
+             <html lang='en'>
+             <head>
+                 <meta charset='UTF-8'>
+                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                 <title>Cancellation of Pro Account Upgrade</title>
+             </head>
+             <body>
+                 <div style='font-family: Arial, sans-serif;'>
+                     <h2>Cancellation of Pro Account Upgrade</h2>
+                     <p>We regret to inform you that your recent upgrade to the Pro service package has been cancelled.</p>
+                     <p>Upon reviewing your account preferences, it seems there might have been a misunderstanding or a change in your requirements. As such, we have reverted your account back to its previous subscription status.</p>
+                     <p>If you have any questions or concerns regarding this change, please do not hesitate to reach out to our customer support team. We are here to assist you in any way we can.</p>
+                     <p>Thank you for considering our Pro service package, and we apologize for any inconvenience this may have caused. We value your continued support and look forward to serving you in the future.</p>
+                     <img src='https://timo.vn/wp-content/uploads/tiny-people-with-laptop-financial-digital-transformation-open-banking-platform-online-banking-system-finance-digital-transformation-concept-illustration_335657-2529.jpg' alt='Cancellation Image' style='max-width: 100%;'>
+                 </div>
+             </body>
+             </html>";
+
+        await _emailService.SendEmailAsync(user.Email, emailSubject, emailBody);
+        user.IsUpgrade = false;
+
+        _userRepository.Update(user);
+        return "Remove Upgrade Account To Pro Successfully";
+    }
 }
